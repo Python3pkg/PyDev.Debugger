@@ -30,7 +30,7 @@ class Signature(object):
         code = frame.f_code
         locals = frame.f_locals
 
-        for i in xrange(0, code.co_argcount):
+        for i in range(0, code.co_argcount):
             name = code.co_varnames[i]
             class_name = get_type_of_value(locals[name], recursive=recursive)
 

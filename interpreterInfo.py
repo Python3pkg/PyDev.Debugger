@@ -121,7 +121,7 @@ if IS_PYTHON_3K:
     bytes_type = bytes
 
 else:
-    unicode_type = unicode
+    unicode_type = str
     bytes_type = str
 
 
@@ -156,7 +156,7 @@ def toasciimxl(s):
             except:
                 try:
                     # Python 2: unicode is a valid identifier
-                    ret += unicode("&#%d;") % ord(c)
+                    ret += str("&#%d;") % ord(c)
                 except:
                     # Python 3: a string is already unicode, so, just doing it directly should work.
                     ret += "&#%d;" % ord(c)

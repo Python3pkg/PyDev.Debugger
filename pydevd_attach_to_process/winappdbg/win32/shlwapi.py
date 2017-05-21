@@ -209,7 +209,7 @@ def PathCombineW(lpszDir, lpszFile):
     _PathCombineW.argtypes = [LPWSTR, LPWSTR, LPWSTR]
     _PathCombineW.restype  = LPWSTR
 
-    lpszDest = ctypes.create_unicode_buffer(u"", max(MAX_PATH, len(lpszDir) + len(lpszFile) + 1))
+    lpszDest = ctypes.create_unicode_buffer("", max(MAX_PATH, len(lpszDir) + len(lpszFile) + 1))
     retval = _PathCombineW(lpszDest, lpszDir, lpszFile)
     if retval == NULL:
         return None
@@ -237,7 +237,7 @@ def PathCanonicalizeW(lpszSrc):
     _PathCanonicalizeW.restype  = bool
     _PathCanonicalizeW.errcheck = RaiseIfZero
 
-    lpszDst = ctypes.create_unicode_buffer(u"", MAX_PATH)
+    lpszDst = ctypes.create_unicode_buffer("", MAX_PATH)
     _PathCanonicalizeW(lpszDst, lpszSrc)
     return lpszDst.value
 
@@ -296,7 +296,7 @@ def PathRelativePathToW(pszFrom = None, dwAttrFrom = FILE_ATTRIBUTE_DIRECTORY, p
     else:
         pszTo = GetCurrentDirectoryW()
     dwPath = max((len(pszFrom) + len(pszTo)) * 2 + 1, MAX_PATH + 1)
-    pszPath = ctypes.create_unicode_buffer(u'', dwPath)
+    pszPath = ctypes.create_unicode_buffer('', dwPath)
     SetLastError(ERROR_INVALID_PARAMETER)
     _PathRelativePathToW(pszPath, pszFrom, dwAttrFrom, pszTo, dwAttrTo)
     return pszPath.value
@@ -410,11 +410,11 @@ def PathFindOnPathW(pszFile, ppszOtherDirs = None):
     if not ppszOtherDirs:
         ppszOtherDirs = None
     else:
-        szArray = u""
+        szArray = ""
         for pszOtherDirs in ppszOtherDirs:
             if pszOtherDirs:
-                szArray = u"%s%s\0" % (szArray, pszOtherDirs)
-        szArray = szArray + u"\0"
+                szArray = "%s%s\0" % (szArray, pszOtherDirs)
+        szArray = szArray + "\0"
         pszOtherDirs = ctypes.create_unicode_buffer(szArray)
         ppszOtherDirs = ctypes.pointer(pszOtherDirs)
     if _PathFindOnPathW(pszFile, ppszOtherDirs):
@@ -742,7 +742,7 @@ def PathUnExpandEnvStringsW(pszPath):
     _PathUnExpandEnvStringsW.errcheck = RaiseIfZero
 
     cchBuf = MAX_PATH
-    pszBuf = ctypes.create_unicode_buffer(u"", cchBuf)
+    pszBuf = ctypes.create_unicode_buffer("", cchBuf)
     _PathUnExpandEnvStringsW(pszPath, pszBuf, cchBuf)
     return pszBuf.value
 

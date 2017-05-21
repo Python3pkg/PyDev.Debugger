@@ -9,7 +9,7 @@ from _pydevd_bundle.pydevd_constants import get_thread_id, IS_PY3K
 file_system_encoding = getfilesystemencoding()
 
 try:
-    from urllib import quote
+    from urllib.parse import quote
 except:
     from urllib.parse import quote  # @UnresolvedImport
 

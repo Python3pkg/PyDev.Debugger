@@ -363,7 +363,7 @@ def process_net_command(py_db, cmd_id, seq, text):
                             if DebugInfoHolder.DEBUG_TRACE_BREAKPOINTS > 0:
                                 existing = id_to_pybreakpoint[breakpoint_id]
                                 sys.stderr.write('Removed breakpoint:%s - line:%s - func_name:%s (id: %s)\n' % (
-                                    file, existing.line, existing.func_name.encode('utf-8'), breakpoint_id))
+                                    file, existing.line, existing.__name__.encode('utf-8'), breakpoint_id))
 
                             del id_to_pybreakpoint[breakpoint_id]
                             py_db.consolidate_breakpoints(file, id_to_pybreakpoint, breakpoints)
@@ -637,7 +637,7 @@ def process_net_command(py_db, cmd_id, seq, text):
                 if text:
                     replace = 'REPLACE:'  # Not all 3.x versions support u'REPLACE:', so, doing workaround.
                     if not IS_PY3K:
-                        replace = unicode(replace)
+                        replace = str(replace)
 
                     if text.startswith(replace):
                         text = text[8:]
@@ -664,7 +664,7 @@ def process_net_command(py_db, cmd_id, seq, text):
                 if text:
                     true_str = 'true'  # Not all 3.x versions support u'str', so, doing workaround.
                     if not IS_PY3K:
-                        true_str = unicode(true_str)
+                        true_str = str(true_str)
 
                     mode = text.strip() == true_str
                     pydevd_dont_trace.trace_filter(mode)
@@ -680,7 +680,7 @@ def process_net_command(py_db, cmd_id, seq, text):
         except Exception:
             traceback.print_exc()
             try:
-                from StringIO import StringIO
+                from io import StringIO
             except ImportError:
                 from io import StringIO
             stream = StringIO()

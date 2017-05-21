@@ -47,7 +47,7 @@ class IOBuf:
     
     def write(self, s):
         if not IS_PY3K:
-            if isinstance(s, unicode):
+            if isinstance(s, str):
                 s = s.encode(self.encoding)
         self.buflist.append(s)
 

@@ -70,7 +70,7 @@ from _pydevd_bundle.pydevd_constants import DebugInfoHolder, get_thread_id, IS_J
     dict_keys
 
 try:
-    from urllib import quote_plus, unquote, unquote_plus
+    from urllib.parse import quote_plus, unquote, unquote_plus
 except:
     from urllib.parse import quote_plus, unquote, unquote_plus  #@Reimport @UnresolvedImport
 import pydevconsole
@@ -960,18 +960,18 @@ class InternalSetNextStatementThread(InternalThreadCommand):
         self.line = line
 
         if IS_PY2:
-            if isinstance(func_name, unicode):
+            if isinstance(func_name, str):
                 # On cython with python 2.X it requires an str, not unicode (but on python 3.3 it should be a str, not bytes).
                 func_name = func_name.encode('utf-8')
 
-        self.func_name = func_name
+        self.__name__ = func_name
 
     def do_it(self, dbg):
         t = pydevd_find_thread_by_id(self.thread_id)
         if t:
             t.additional_info.pydev_step_cmd = self.cmd_id
             t.additional_info.pydev_next_line = int(self.line)
-            t.additional_info.pydev_func_name = self.func_name
+            t.additional_info.pydev_func_name = self.__name__
             t.additional_info.pydev_state = STATE_RUN
 
 

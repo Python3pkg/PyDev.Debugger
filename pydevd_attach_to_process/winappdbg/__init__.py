@@ -251,7 +251,7 @@ import winappdbg.win32
 from winappdbg.win32 import Handle, ProcessHandle, ThreadHandle, FileHandle
 
 try:
-    from sql import *
+    from .sql import *
     __all__.append('CrashDAO')
 except ImportError:
     import warnings

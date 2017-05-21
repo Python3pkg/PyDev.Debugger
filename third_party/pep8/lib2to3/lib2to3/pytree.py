@@ -14,7 +14,7 @@ __author__ = "Guido van Rossum <guido@python.org>"
 
 import sys
 import warnings
-from StringIO import StringIO
+from io import StringIO
 
 HUGE = 0x7FFFFFFF  # maximum repeat count, default max
 
@@ -25,7 +25,7 @@ def type_repr(type_num):
         from .pygram import python_symbols
         # printing tokens is possible but not as useful
         # from .pgen2 import token // token.__dict__.items():
-        for name, val in python_symbols.__dict__.items():
+        for name, val in list(python_symbols.__dict__.items()):
             if type(val) == int: _type_reprs[val] = name
     return _type_reprs.setdefault(type_num, type_num)
 
@@ -229,12 +229,12 @@ class Base(object):
         """
         next_sib = self.next_sibling
         if next_sib is None:
-            return u""
+            return ""
         return next_sib.prefix
 
     if sys.version_info < (3, 0):
         def __str__(self):
-            return unicode(self).encode("ascii")
+            return str(self).encode("ascii")
 
 class Node(Base):
 
@@ -277,7 +277,7 @@ class Node(Base):
 
         This reproduces the input source exactly.
         """
-        return u"".join(map(unicode, self.children))
+        return "".join(map(str, self.children))
 
     if sys.version_info > (3, 0):
         __str__ = __unicode__
@@ -388,7 +388,7 @@ class Leaf(Base):
 
         This reproduces the input source exactly.
         """
-        return self.prefix + unicode(self.value)
+        return self.prefix + str(self.value)
 
     if sys.version_info > (3, 0):
         __str__ = __unicode__
@@ -548,7 +548,7 @@ class LeafPattern(BasePattern):
         if type is not None:
             assert 0 <= type < 256, type
         if content is not None:
-            assert isinstance(content, basestring), repr(content)
+            assert isinstance(content, str), repr(content)
         self.type = type
         self.content = content
         self.name = name
@@ -598,7 +598,7 @@ class NodePattern(BasePattern):
         if type is not None:
             assert type >= 256, type
         if content is not None:
-            assert not isinstance(content, basestring), repr(content)
+            assert not isinstance(content, str), repr(content)
             content = list(content)
             for i, item in enumerate(content):
                 assert isinstance(item, BasePattern), (i, item)
@@ -733,7 +733,7 @@ class WildcardPattern(BasePattern):
         """
         if self.content is None:
             # Shortcut for special case (see __init__.__doc__)
-            for count in xrange(self.min, 1 + min(len(nodes), self.max)):
+            for count in range(self.min, 1 + min(len(nodes), self.max)):
                 r = {}
                 if self.name:
                     r[self.name] = nodes[:count]

@@ -27,18 +27,18 @@ def do_find(f, mod):
     if inspect.isclass(mod):
         name = mod.__name__
         pat = re.compile(r'^\s*class\s*' + name + r'\b')
-        for i in xrange(len(lines)):
+        for i in range(len(lines)):
             if pat.match(lines[i]):
                 return f, i, 0
 
         return f, 0, 0
 
     if inspect.ismethod(mod):
-        mod = mod.im_func
+        mod = mod.__func__
 
     if inspect.isfunction(mod):
         try:
-            mod = mod.func_code
+            mod = mod.__code__
         except AttributeError:
             mod = mod.__code__ #python 3k
 

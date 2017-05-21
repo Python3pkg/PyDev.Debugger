@@ -35,7 +35,7 @@ Thread instrumentation.
     Thread
 """
 
-from __future__ import with_statement
+
 
 __revision__ = "$Id$"
 

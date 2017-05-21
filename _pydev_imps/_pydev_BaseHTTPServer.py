@@ -356,12 +356,12 @@ class BaseHTTPRequestHandler(SocketServer.StreamRequestHandler):
         """
 
         try:
-            short, long = self.responses[code]
+            short, int = self.responses[code]
         except KeyError:
-            short, long = '???', '???'
+            short, int = '???', '???'
         if message is None:
             message = short
-        explain = long
+        explain = int
         self.log_error("code %d, message %s", code, message)
         # using _quote_html to prevent Cross Site Scripting attacks (see bug #1100201)
         content = (self.error_message_format %
@@ -596,7 +596,7 @@ def test(HandlerClass = BaseHTTPRequestHandler,
     httpd = ServerClass(server_address, HandlerClass)
 
     sa = httpd.socket.getsockname()
-    print ("Serving HTTP on", sa[0], "port", sa[1], "...")
+    print(("Serving HTTP on", sa[0], "port", sa[1], "..."))
     httpd.serve_forever()
 
 

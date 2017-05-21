@@ -12,10 +12,10 @@ class Entry(object):
         self.val = val
 
     def __unicode__(self):
-        return u'%s:%s' % (self.key, self.val)
+        return '%s:%s' % (self.key, self.val)
 
     def __str__(self):
-        return u'%s:%s' % (self.key, self.val)
+        return '%s:%s' % (self.key, self.val)
 
 def index(request):
     context = {

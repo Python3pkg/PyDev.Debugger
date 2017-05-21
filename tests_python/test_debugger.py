@@ -117,8 +117,8 @@ class AbstractWriterThreadCaseDjango(debugger_unittest.AbstractWriterThread):
                 try:
                     from urllib.request import urlopen
                 except ImportError:
-                    from urllib import urlopen
-                for _ in xrange(10):
+                    from urllib.request import urlopen
+                for _ in range(10):
                     try:
                         stream = urlopen('http://127.0.0.1:%s/%s' % (outer.django_port,uri))
                         self.contents = stream.read()
@@ -161,7 +161,7 @@ class WriterThreadCaseDjango(AbstractWriterThreadCaseDjango):
 
         self.write_run_thread(thread_id)
 
-        for _ in xrange(10):
+        for _ in range(10):
             if hasattr(t, 'contents'):
                 break
             time.sleep(.3)
@@ -1149,7 +1149,7 @@ class WriterThreadCaseRemoteDebuggerMultiProc(debugger_unittest.AbstractWriterTh
         self.log.append('run thread')
         self.write_run_thread(thread_id)
 
-        for _i in xrange(400):
+        for _i in range(400):
             if secondary_multi_proc_process_writer_thread.finished_ok:
                 break
             time.sleep(.1)
@@ -1425,7 +1425,7 @@ def get_java_location():
 def get_jython_jar():
     from java.lang import ClassLoader  # @UnresolvedImport
     cl = ClassLoader.getSystemClassLoader()
-    paths = map(lambda url: url.getFile(), cl.getURLs())
+    paths = [url.getFile() for url in cl.getURLs()]
     for p in paths:
         if 'jython.jar' in p:
             return p

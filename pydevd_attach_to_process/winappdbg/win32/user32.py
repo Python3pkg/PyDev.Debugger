@@ -779,7 +779,7 @@ def GetClassNameW(hWnd):
     nMaxCount = 0x1000
     dwCharSize = sizeof(WCHAR)
     while 1:
-        lpClassName = ctypes.create_unicode_buffer(u"", nMaxCount)
+        lpClassName = ctypes.create_unicode_buffer("", nMaxCount)
         nCount = _GetClassNameW(hWnd, lpClassName, nMaxCount)
         if nCount == 0:
             raise ctypes.WinError()

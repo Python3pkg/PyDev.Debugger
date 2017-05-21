@@ -10,11 +10,11 @@ import socket
 import select
 
 if IS_PY2:
-    import thread
-    import Queue as _queue
-    import xmlrpclib
-    import SimpleXMLRPCServer as _pydev_SimpleXMLRPCServer
-    import BaseHTTPServer
+    import _thread
+    import queue as _queue
+    import xmlrpc.client
+    import xmlrpc.server as _pydev_SimpleXMLRPCServer
+    import http.server
 else:
     import _thread as thread
     import queue as _queue

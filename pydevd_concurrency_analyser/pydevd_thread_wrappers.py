@@ -1,4 +1,5 @@
 from _pydev_imps._pydev_saved_modules import threading
+import collections
 
 
 def wrapper(fun):
@@ -28,7 +29,7 @@ class ObjectWrapper(object):
 
     def __getattr__(self, attr):
         orig_attr = getattr(self.wrapped_object, attr) #.__getattribute__(attr)
-        if callable(orig_attr):
+        if isinstance(orig_attr, collections.Callable):
             def patched_attr(*args, **kwargs):
                 self.call_begin(attr)
                 result = orig_attr(*args, **kwargs)
@@ -77,6 +78,6 @@ def wrap_threads():
         import queue  # @UnresolvedImport
         queue.Queue = factory_wrapper(queue.Queue)
     except:
-        import Queue
-        Queue.Queue = factory_wrapper(Queue.Queue)
+        import queue
+        queue.Queue = factory_wrapper(queue.Queue)
 

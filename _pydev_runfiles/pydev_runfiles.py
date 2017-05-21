@@ -1,4 +1,4 @@
-from __future__ import nested_scopes
+
 
 import fnmatch
 import os.path
@@ -320,7 +320,7 @@ class PydevTestRunner(object):
     def __adjust_path(self):
         """ add the current file or directory to the python path """
         path_to_append = None
-        for n in xrange(len(self.files_or_dirs)):
+        for n in range(len(self.files_or_dirs)):
             dir_name = self.__unixify(self.files_or_dirs[n])
             if os.path.isdir(dir_name):
                 if not dir_name.endswith("/"):
@@ -386,7 +386,7 @@ class PydevTestRunner(object):
     def find_import_files(self):
         """ return a list of files to import """
         if self.files_to_tests:
-            pyfiles = self.files_to_tests.keys()
+            pyfiles = list(self.files_to_tests.keys())
         else:
             pyfiles = []
 

@@ -9,7 +9,7 @@ from _pydevd_bundle.pydevd_xml import ExceptionOnEvaluate, get_type, var_to_xml
 from _pydev_imps._pydev_saved_modules import thread
 
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
     from io import StringIO
 import sys  # @Reimport
@@ -205,7 +205,7 @@ def getVariable(thread_id, frame_id, scope, attrs):
         attr.replace("@_@TAB_CHAR@_@", '\t')
 
     if scope == 'EXPRESSION':
-        for count in xrange(len(attrList)):
+        for count in range(len(attrList)):
             if count == 0:
                 # An Expression can be in any scope (globals/locals), therefore it needs to evaluated as an expression
                 var = evaluate_expression(thread_id, frame_id, attrList[count], False)
@@ -271,7 +271,7 @@ def custom_operation(thread_id, frame_id, scope, attrs, style, code_or_file, ope
         namespace = {'__name__': '<custom_operation>'}
         if style == "EXECFILE":
             namespace['__file__'] = code_or_file
-            execfile(code_or_file, namespace, namespace)
+            exec(compile(open(code_or_file).read(), code_or_file, 'exec'), namespace, namespace)
         else:  # style == EXEC
             namespace['__file__'] = '<customOperationCode>'
             Exec(code_or_file, namespace, namespace)
@@ -446,9 +446,9 @@ def array_to_xml(array, roffset, coffset, rows, cols, format):
             rows = min(rows, len(array))
 
     xml += "<arraydata rows=\"%s\" cols=\"%s\"/>" % (rows, cols)
-    for row in xrange(rows):
+    for row in range(rows):
         xml += "<row index=\"%s\"/>" % to_string(row)
-        for col in xrange(cols):
+        for col in range(cols):
             value = array
             if rows == 1 or cols == 1:
                 if rows == 1 and cols == 1:
@@ -477,7 +477,7 @@ def array_to_meta_xml(array, name, format):
     if format == '%':
         if l > 2:
             slice += '[0]' * (l - 2)
-            for r in xrange(l - 2):
+            for r in range(l - 2):
                 array = array[0]
         if type == 'f':
             format = '.5f'
@@ -561,7 +561,7 @@ def dataframe_to_xml(df, name, roffset, coffset, rows, cols, format):
     cols = min(min(cols, MAXIMUM_ARRAY_SIZE), num_cols)
     # need to precompute column bounds here before slicing!
     col_bounds = [None] * cols
-    for col in xrange(cols):
+    for col in range(cols):
         dtype = df.dtypes.iloc[coffset + col].kind
         if dtype in "biufc":
             cvalues = df.iloc[:, coffset + col]
@@ -579,7 +579,7 @@ def dataframe_to_xml(df, name, roffset, coffset, rows, cols, format):
 
     get_label = lambda label: str(label) if not isinstance(label, tuple) else '/'.join(map(str, label))
 
-    for col in xrange(cols):
+    for col in range(cols):
         dtype = df.dtypes.iloc[col].kind
         if dtype == 'f' and format:
             fmt = format
@@ -599,9 +599,9 @@ def dataframe_to_xml(df, name, roffset, coffset, rows, cols, format):
                (str(row), get_label(label))
     xml += "</headerdata>\n"
     xml += "<arraydata rows=\"%s\" cols=\"%s\"/>\n" % (rows, cols)
-    for row in xrange(rows):
+    for row in range(rows):
         xml += "<row index=\"%s\"/>\n" % str(row)
-        for col in xrange(cols):
+        for col in range(cols):
             value = df.iat[row, col]
             value = col_formats[col] % value
             xml += var_to_xml(value, '')

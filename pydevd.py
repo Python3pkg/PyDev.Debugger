@@ -94,7 +94,7 @@ class PyDBCommandThread(PyDBDaemonThread):
         self.setName('pydevd.CommandThread')
 
     def _on_run(self):
-        for i in xrange(1, 10):
+        for i in range(1, 10):
             time.sleep(0.5) #this one will only start later on (because otherwise we may not have any non-daemon threads
             if self.killReceived:
                 return
@@ -862,8 +862,8 @@ class PyDB:
             else:
                 try:
                     #If it's the trace_exception, go back to the frame trace dispatch!
-                    if frame.f_trace.im_func.__name__ == 'trace_exception':
-                        frame.f_trace = frame.f_trace.im_self.trace_dispatch
+                    if frame.f_trace.__func__.__name__ == 'trace_exception':
+                        frame.f_trace = frame.f_trace.__self__.trace_dispatch
                 except AttributeError:
                     pass
                 frame = frame.f_back

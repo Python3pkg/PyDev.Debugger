@@ -51,7 +51,7 @@ class Null:
     def write(self, *args, **kwargs):
         pass
 
-    def __nonzero__(self):
+    def __bool__(self):
         return 0
 
 
@@ -465,7 +465,7 @@ class BaseInterpreterInterface:
         if valDict is None:
             valDict = {}
 
-        keys = valDict.keys()
+        keys = list(valDict.keys())
 
         for k in keys:
             xml += pydevd_vars.var_to_xml(valDict[k], to_string(k))

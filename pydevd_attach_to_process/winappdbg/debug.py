@@ -342,7 +342,7 @@ class Debug (EventDispatcher, _BreakpointContainer):
 
         @raise WindowsError: Raises an exception on error.
         """
-        if type(argv) in (str, compat.unicode):
+        if type(argv) in (str, compat.str):
             raise TypeError("Debug.execv expects a list, not a string")
         lpCmdLine = self.system.argv_to_cmdline(argv)
         return self.execl(lpCmdLine, **kwargs)
@@ -430,7 +430,7 @@ class Debug (EventDispatcher, _BreakpointContainer):
 
         @raise WindowsError: Raises an exception on error.
         """
-        if type(lpCmdLine) not in (str, compat.unicode):
+        if type(lpCmdLine) not in (str, compat.str):
             warnings.warn("Debug.execl expects a string")
 
         # Set the "debug" flag to True.
@@ -1071,7 +1071,7 @@ class Debug (EventDispatcher, _BreakpointContainer):
         # Close all Win32 handles the Python garbage collector failed to close.
         self.force_garbage_collection(bIgnoreExceptions)
 
-    def next(self):
+    def __next__(self):
         """
         Handles the next debug event.
 
@@ -1127,7 +1127,7 @@ class Debug (EventDispatcher, _BreakpointContainer):
             event handler raises an exception nobody catches.
         """
         while self:
-            self.next()
+            next(self)
 
     def get_debugee_count(self):
         """
@@ -1218,11 +1218,11 @@ class Debug (EventDispatcher, _BreakpointContainer):
         This method returns when the user closes the session.
         """
         print('')
-        print("-" * 79)
+        print(("-" * 79))
         print("Interactive debugging session started.")
         print("Use the \"help\" command to list all available commands.")
         print("Use the \"quit\" command to close this session.")
-        print("-" * 79)
+        print(("-" * 79))
         if self.lastEvent is None:
             print('')
         console = ConsoleDebugger()
@@ -1235,9 +1235,9 @@ class Debug (EventDispatcher, _BreakpointContainer):
             console.stop_using_debugger()
             console.save_history()
         print('')
-        print("-" * 79)
+        print(("-" * 79))
         print("Interactive debugging session closed.")
-        print("-" * 79)
+        print(("-" * 79))
         print('')
 
 #------------------------------------------------------------------------------

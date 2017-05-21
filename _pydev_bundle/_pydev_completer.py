@@ -1,7 +1,7 @@
 import pydevconsole
 
 try:
-    import __builtin__
+    import builtins
 except ImportError:
     import builtins as __builtin__
 
@@ -104,12 +104,12 @@ class Completer:
         
         a = {}
         
-        for dict_with_comps in [__builtin__.__dict__, self.namespace, self.global_namespace]: #@UndefinedVariable
+        for dict_with_comps in [builtins.__dict__, self.namespace, self.global_namespace]: #@UndefinedVariable
             a.update(dict_with_comps)
             
         filter = _StartsWithFilter(text)
             
-        return dir2(a, a.keys(), get_item, filter)
+        return dir2(a, list(a.keys()), get_item, filter)
 
     def attr_matches(self, text):
         """Compute matches when text contains a dot.

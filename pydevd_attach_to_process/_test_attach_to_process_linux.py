@@ -40,7 +40,7 @@ if __name__ == '__main__':
 #     import attach_pydevd
 #     attach_pydevd.main(attach_pydevd.process_command_line(['--pid', str(p.pid)]))
     p = subprocess.Popen([sys.executable, '-u', '_always_live_program.py'])
-    print('Size of file: %s' % (os.stat(so_location).st_size))
+    print(('Size of file: %s' % (os.stat(so_location).st_size)))
 
     #(gdb) set architecture
     # Requires an argument. Valid arguments are i386, i386:x86-64, i386:x64-32, i8086, i386:intel, i386:x86-64:intel, i386:x64-32:intel, i386:nacl, i386:x86-64:nacl, i386:x64-32:nacl, auto.
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     cmd.extend(['--command=/home/fabioz/Desktop/dev/PyDev.Debugger/pydevd_attach_to_process/linux/gdb_threads_settrace.py'])
         
 
-    print(' '.join(cmd))
+    print((' '.join(cmd)))
     time.sleep(.5)
     env = os.environ.copy()
     env.pop('PYTHONIOENCODING', None)

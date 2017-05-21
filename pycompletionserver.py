@@ -5,7 +5,7 @@ Entry-point module to start the code-completion server for PyDev.
 '''
 IS_PYTHON3K = 0
 try:
-    import __builtin__
+    import builtins
 except ImportError:
     import builtins as __builtin__  # Python 3.0
     IS_PYTHON3K = 1
@@ -43,7 +43,7 @@ for p in sys.path:
 
 # initial sys.modules
 _sys_modules = {}
-for name, mod in sys.modules.items():
+for name, mod in list(sys.modules.items()):
     _sys_modules[name] = mod
 
 
@@ -52,12 +52,12 @@ import traceback
 from _pydev_imps._pydev_saved_modules import time
 
 try:
-    import StringIO
+    import io
 except:
     import io as StringIO #Python 3.0
 
 try:
-    from urllib import quote_plus, unquote_plus
+    from urllib.parse import quote_plus, unquote_plus
 except ImportError:
     from urllib.parse import quote_plus, unquote_plus #Python 3.0
 
@@ -360,7 +360,7 @@ class CompletionServer:
 
                     except:
                         dbg(SERVER_NAME + ' exception occurred', ERROR)
-                        s = StringIO.StringIO()
+                        s = io.StringIO()
                         traceback.print_exc(file=s)
 
                         err = s.getvalue()
@@ -385,7 +385,7 @@ class CompletionServer:
                 sys.exit(0)
             # No need to log SystemExit error
         except:
-            s = StringIO.StringIO()
+            s = io.StringIO()
             exc_info = sys.exc_info()
 
             traceback.print_exception(exc_info[0], exc_info[1], exc_info[2], limit=None, file=s)

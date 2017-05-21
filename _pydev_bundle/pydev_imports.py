@@ -6,7 +6,7 @@ try:
         if USE_LIB_COPY:
             from _pydev_imps._pydev_saved_modules import xmlrpclib
         else:
-            import xmlrpclib
+            import xmlrpc.client
     except ImportError:
         import xmlrpc.client as xmlrpclib
 except ImportError:
@@ -19,7 +19,7 @@ try:
             from _pydev_imps._pydev_saved_modules import _pydev_SimpleXMLRPCServer
             from _pydev_SimpleXMLRPCServer import SimpleXMLRPCServer
         else:
-            from SimpleXMLRPCServer import SimpleXMLRPCServer
+            from xmlrpc.server import SimpleXMLRPCServer
     except ImportError:
         from xmlrpc.server import SimpleXMLRPCServer
 except ImportError:
@@ -28,7 +28,7 @@ except ImportError:
 
 
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
     from io import StringIO
 
@@ -43,7 +43,7 @@ try:
     if USE_LIB_COPY:
         from _pydev_imps._pydev_saved_modules import _queue
     else:
-        import Queue as _queue
+        import queue as _queue
 except:
     import queue as _queue #@UnresolvedImport
 
@@ -54,7 +54,7 @@ except:
     from _pydevd_bundle.pydevd_exec2 import Exec
 
 try:
-    from urllib import quote, quote_plus, unquote_plus
+    from urllib.parse import quote, quote_plus, unquote_plus
 except:
     from urllib.parse import quote, quote_plus, unquote_plus #@UnresolvedImport
 

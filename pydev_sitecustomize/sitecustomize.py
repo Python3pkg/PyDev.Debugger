@@ -46,7 +46,7 @@ if IS_PYTHON_3K:
 try:
     import org.python.core.PyDictionary #@UnresolvedImport @UnusedImport -- just to check if it could be valid
     def dict_contains(d, key):
-        return d.has_key(key)
+        return key in d
 except:
     try:
         #Py3k does not have has_key anymore, and older versions don't have __contains__
@@ -56,7 +56,7 @@ except:
             dict_contains = dict.has_key
         except NameError:
             def dict_contains(d, key):
-                return d.has_key(key)
+                return key in d
 
 
 #----------------------------------------------------------------------------------------------------------------------- 
@@ -119,9 +119,9 @@ if not IS_PYTHON_3K:
     try:
         #Redefine input and raw_input only after the original sitecustomize was executed
         #(because otherwise, the original raw_input and input would still not be defined)
-        import __builtin__
-        original_raw_input = __builtin__.raw_input
-        original_input = __builtin__.input
+        import builtins
+        original_raw_input = builtins.raw_input
+        original_input = builtins.input
         
         
         def raw_input(prompt=''):
@@ -138,12 +138,12 @@ if not IS_PYTHON_3K:
     
         def input(prompt=''):
             #input must also be rebinded for using the new raw_input defined
-            return eval(raw_input(prompt))
+            return eval(input(prompt))
         input.__doc__ = original_input.__doc__
         
         
-        __builtin__.raw_input = raw_input
-        __builtin__.input = input
+        builtins.raw_input = raw_input
+        builtins.input = input
     
     except:
         #Don't report errors at this stage

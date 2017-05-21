@@ -4,9 +4,9 @@
 '''
 from _pydev_bundle import _pydev_imports_tipper
 import traceback
-import StringIO
+import io
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import pycompletionserver
 
 
@@ -16,11 +16,11 @@ import pycompletionserver
 def GetImports(module_name):
     try:
         processor = pycompletionserver.Processor()
-        data = urllib.unquote_plus(module_name)
+        data = urllib.parse.unquote_plus(module_name)
         def_file, completions = _pydev_imports_tipper.GenerateTip(data)
         return processor.formatCompletionMessage(def_file, completions)
     except:
-        s = StringIO.StringIO()
+        s = io.StringIO()
         exc_info = sys.exc_info()
 
         traceback.print_exception(exc_info[0], exc_info[1], exc_info[2], limit=None, file=s)
@@ -35,5 +35,5 @@ def GetImports(module_name):
 if __name__ == '__main__':
     mod_name = sys.argv[1]
 
-    print(GetImports(mod_name))
+    print((GetImports(mod_name)))
 

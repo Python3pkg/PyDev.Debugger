@@ -237,7 +237,7 @@ class TextPattern (BytePattern):
         @param caseSensitive: C{True} of the search is case sensitive,
             C{False} otherwise.
         """
-        self.isUnicode = isinstance(text, compat.unicode)
+        self.isUnicode = isinstance(text, compat.str)
         self.encoding = encoding
         self.caseSensitive = caseSensitive
         if not self.caseSensitive:
@@ -268,7 +268,7 @@ class TextPattern (BytePattern):
     def found(self, address, size, data):
         if self.isUnicode:
             try:
-                data = compat.unicode(data, self.encoding)
+                data = compat.str(data, self.encoding)
             except Exception:
 ##                traceback.print_exc()    # XXX DEBUG
                 return None

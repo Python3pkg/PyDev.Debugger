@@ -10,7 +10,7 @@ def method2():
 
 def method():
 
-    for i in xrange(200000):
+    for i in range(200000):
         method2()
 
         if False:
@@ -20,7 +20,7 @@ def method():
 def caller():
     start_time = time.time()
     method()
-    print('TotalTime>>%s<<' % (time.time()-start_time,))
+    print(('TotalTime>>%s<<' % (time.time()-start_time,)))
 
 if __name__ == '__main__':
     import sys

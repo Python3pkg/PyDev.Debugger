@@ -122,7 +122,7 @@ def patch_args(args):
                 # Assumes the first non `-<flag>` argument is what we need to check.
                 # There's probably a better way to determine this but it works for most cases.
                 continue_next = False
-                for i in xrange(1, len(args)):
+                for i in range(1, len(args)):
                     if continue_next:
                         continue_next = False
                         continue
@@ -197,7 +197,7 @@ def str_to_args_windows(args):
     buf = ''
 
     args_len = len(args)
-    for i in xrange(args_len):
+    for i in range(args_len):
         ch = args[i]
         if (ch == '\\'):
             backslashes += 1
@@ -594,7 +594,7 @@ def _get_threading_modules_to_patch():
     threading_modules_to_patch = []
 
     try:
-        import thread as _thread
+        import _thread as _thread
     except:
         import _thread
     threading_modules_to_patch.append(_thread)

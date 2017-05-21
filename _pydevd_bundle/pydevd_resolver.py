@@ -1,5 +1,5 @@
 try:
-    import StringIO
+    import io
 except:
     import io as StringIO
 import traceback
@@ -97,12 +97,12 @@ class DefaultResolver:
 
                 declaredMethods = obj.getDeclaredMethods()
                 declaredFields = obj.getDeclaredFields()
-                for i in xrange(len(declaredMethods)):
+                for i in range(len(declaredMethods)):
                     name = declaredMethods[i].getName()
                     ret[name] = declaredMethods[i].toString()
                     found.put(name, 1)
 
-                for i in xrange(len(declaredFields)):
+                for i in range(len(declaredFields)):
                     name = declaredFields[i].getName()
                     found.put(name, 1)
                     #if declaredFields[i].isAccessible():
@@ -171,7 +171,7 @@ class DefaultResolver:
                             continue
                 except:
                     #if some error occurs getting it, let's put it to the user.
-                    strIO = StringIO.StringIO()
+                    strIO = io.StringIO()
                     traceback.print_exc(file=strIO)
                     attr = strIO.getvalue()
 
@@ -211,7 +211,7 @@ class DictResolver:
             return '%r' % key
         else:
             if not pydevd_constants.IS_PY3K:
-                if isinstance(key, unicode):
+                if isinstance(key, str):
                     return "u'%s'" % key
             return key
 
@@ -331,7 +331,7 @@ class InstanceResolver:
         ret = {}
 
         declaredFields = obj.__class__.getDeclaredFields()
-        for i in xrange(len(declaredFields)):
+        for i in range(len(declaredFields)):
             name = declaredFields[i].getName()
             try:
                 declaredFields[i].setAccessible(True)
@@ -358,7 +358,7 @@ class JyArrayResolver:
     def get_dictionary(self, obj):
         ret = {}
 
-        for i in xrange(len(obj)):
+        for i in range(len(obj)):
             ret[ i ] = obj[i]
 
         ret['__len__'] = len(obj)

@@ -39,7 +39,7 @@ Binary code disassembly.
     LibdisassembleEngine, PyDasmEngine
 """
 
-from __future__ import with_statement
+
 
 __revision__ = "$Id$"
 

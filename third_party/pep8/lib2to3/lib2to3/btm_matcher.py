@@ -104,7 +104,7 @@ class BottomMatcher(object):
                 current_ast_node.was_checked = True
                 for child in current_ast_node.children:
                     # multiple statements, recheck
-                    if isinstance(child, pytree.Leaf) and child.value == u";":
+                    if isinstance(child, pytree.Leaf) and child.value == ";":
                         current_ast_node.was_checked = False
                         break
                 if current_ast_node.type == 1:
@@ -134,7 +134,7 @@ class BottomMatcher(object):
                         #token matches
                         current_ac_node = current_ac_node.transition_table[node_token]
                         for fixer in current_ac_node.fixers:
-                            if not fixer in results.keys():
+                            if not fixer in list(results.keys()):
                                 results[fixer] = []
                             results[fixer].append(current_ast_node)
 
@@ -145,12 +145,12 @@ class BottomMatcher(object):
         "Prints a graphviz diagram of the BM automaton(for debugging)"
         print("digraph g{")
         def print_node(node):
-            for subnode_key in node.transition_table.keys():
+            for subnode_key in list(node.transition_table.keys()):
                 subnode = node.transition_table[subnode_key]
-                print("%d -> %d [label=%s] //%s" %
-                      (node.id, subnode.id, type_repr(subnode_key), str(subnode.fixers)))
+                print(("%d -> %d [label=%s] //%s" %
+                      (node.id, subnode.id, type_repr(subnode_key), str(subnode.fixers))))
                 if subnode_key == 1:
-                    print(subnode.content)
+                    print((subnode.content))
                 print_node(subnode)
         print_node(self.root)
         print("}")
@@ -163,6 +163,6 @@ def type_repr(type_num):
         from .pygram import python_symbols
         # printing tokens is possible but not as useful
         # from .pgen2 import token // token.__dict__.items():
-        for name, val in python_symbols.__dict__.items():
+        for name, val in list(python_symbols.__dict__.items()):
             if type(val) == int: _type_reprs[val] = name
     return _type_reprs.setdefault(type_num, type_num)

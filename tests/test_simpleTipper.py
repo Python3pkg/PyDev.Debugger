@@ -8,7 +8,7 @@ import sys
 import unittest
 
 try:
-    import __builtin__ #@UnusedImport
+    import builtins #@UnusedImport
     BUILTIN_MOD = '__builtin__'
 except ImportError:
     BUILTIN_MOD = 'builtins'

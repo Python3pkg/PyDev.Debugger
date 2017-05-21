@@ -105,7 +105,7 @@ except ImportError:
 
     # Faster implementation of the pickle module as a C extension.
     try:
-        import cPickle as pickle
+        import pickle as pickle
 
     # If all fails fallback to the classic pickle module.
     except ImportError:
@@ -1209,10 +1209,10 @@ class CrashContainer (object):
         if filename:
             global anydbm
             if not anydbm:
-                import anydbm
-            self.__db = anydbm.open(filename, 'c')
+                import dbm
+            self.__db = dbm.open(filename, 'c')
             self.__keys = dict([ (self.unmarshall_key(mk), mk)
-                                                  for mk in self.__db.keys() ])
+                                                  for mk in list(self.__db.keys()) ])
         else:
             self.__db = dict()
             self.__keys = dict()
@@ -1357,7 +1357,7 @@ class CrashContainer (object):
         @return:
             C{True} if a Crash object with the same key is in the container.
         """
-        return self.has_key( crash.key() )
+        return crash.key() in self
 
     def has_key(self, key):
         """
@@ -1396,13 +1396,13 @@ class CrashContainer (object):
             self.__container = container
             self.__keys_iter = compat.iterkeys(container)
 
-        def next(self):
+        def __next__(self):
             """
             @rtype:  L{Crash}
             @return: A B{copy} of a Crash object in the L{CrashContainer}.
             @raise StopIteration: No more items left.
             """
-            key  = self.__keys_iter.next()
+            key  = next(self.__keys_iter)
             return self.__container.get(key)
 
     def __del__(self):
@@ -1419,7 +1419,7 @@ class CrashContainer (object):
         @rtype:  iterator
         @return: Iterator of the contained L{Crash} objects.
         """
-        return self.itervalues()
+        return iter(self.values())
 
     def itervalues(self):
         """
@@ -1717,8 +1717,8 @@ class CrashTableMSSQL (CrashDictionary):
         warnings.warn(
             "The %s class is deprecated since WinAppDbg 1.5." % self.__class__,
             DeprecationWarning)
-        import urllib
-        url = "mssql+pyodbc:///?odbc_connect=" + urllib.quote_plus(location)
+        import urllib.request, urllib.parse, urllib.error
+        url = "mssql+pyodbc:///?odbc_connect=" + urllib.parse.quote_plus(location)
         super(CrashTableMSSQL, self).__init__(url, allowRepeatedKeys)
 
 class VolatileCrashContainer (CrashTable):
@@ -1825,7 +1825,7 @@ class DummyCrashContainer(object):
         @rtype:  bool
         @return: C{True} if a matching L{Crash} object is in the container.
         """
-        return self.__keys.has_key( key )
+        return key in self.__keys
 
     def iterkeys(self):
         """

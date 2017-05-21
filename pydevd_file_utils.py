@@ -102,7 +102,7 @@ if sys.platform == 'win32':
             buf = ctypes.create_unicode_buffer(260)
             GetLongPathName = ctypes.windll.kernel32.GetLongPathNameW
             if IS_PY2:
-                filename = unicode(filename, getfilesystemencoding())
+                filename = str(filename, getfilesystemencoding())
             rv = GetLongPathName(filename, buf, 260)
             if rv != 0 and rv <= 260:
                 return buf.value
@@ -241,7 +241,7 @@ def exists(file):
 #related to the names generated...
 try:
     try:
-        code = rPath.func_code
+        code = rPath.__code__
     except AttributeError:
         code = rPath.__code__
     if not exists(_NormFile(code.co_filename)):

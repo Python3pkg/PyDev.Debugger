@@ -1,9 +1,9 @@
-from __future__ import nested_scopes
+
 import traceback
 import os
 
 try:
-    from urllib import quote
+    from urllib.parse import quote
 except:
     from urllib.parse import quote  # @UnresolvedImport
 
@@ -66,7 +66,7 @@ if IS_PY3K:
 
 else:
     def is_string(x):
-        return isinstance(x, basestring)
+        return isinstance(x, str)
 
 def to_string(x):
     if is_string(x):
@@ -83,7 +83,7 @@ if IS_PY3K:
         return quote(s, safe)
 else:
     def quote_smart(s, safe='/'):
-        if isinstance(s, unicode):
+        if isinstance(s, str):
             s =  s.encode('utf-8')
 
         return quote(s, safe)
@@ -106,7 +106,7 @@ def get_clsname_for_code(code, frame):
                 method = getattr(first_arg_class, func_name)
                 func_code = None
                 if hasattr(method, 'func_code'):  # Python2
-                    func_code = method.func_code
+                    func_code = method.__code__
                 elif hasattr(method, '__code__'):  # Python3
                     func_code = method.__code__
                 if func_code and func_code == code:

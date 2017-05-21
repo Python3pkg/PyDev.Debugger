@@ -36,7 +36,7 @@ def __lldb_init_module(debugger, internal_dict):
                             thread.StepOver()
                             frame = thread.GetSelectedFrame()
 
-                        print('Will settrace in: %s' % (frame,))
+                        print(('Will settrace in: %s' % (frame,)))
 
                         for f in thread:
                             print(f)

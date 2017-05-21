@@ -1,4 +1,4 @@
-import debugger_unittest
+from . import debugger_unittest
 import sys
 import re
 import os
@@ -124,7 +124,7 @@ class CheckDebuggerPerformance(debugger_unittest.DebuggerRunner):
         all_times = []
         for _ in range(runs):
             all_times.append(self._get_time_from_result(self.check_case(writer_thread_class)))
-            print('partial for: %s: %.3fs' % (writer_thread_class.BENCHMARK_NAME, all_times[-1]))
+            print(('partial for: %s: %.3fs' % (writer_thread_class.BENCHMARK_NAME, all_times[-1])))
         all_times.remove(min(all_times))
         all_times.remove(max(all_times))
         time_when_debugged = sum(all_times) / float(len(all_times))
@@ -222,4 +222,4 @@ if __name__ == '__main__':
     for msg in msgs:
         print(msg)
 
-    print('TotalTime for profile: %.2fs' % (time.time()-start_time,))
+    print(('TotalTime for profile: %.2fs' % (time.time()-start_time,)))

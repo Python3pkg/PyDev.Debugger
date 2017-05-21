@@ -64,7 +64,7 @@ def alternates(members):
 
 def build_pattern(mapping=MAPPING):
     mod_list = ' | '.join(["module_name='%s'" % key for key in mapping])
-    bare_names = alternates(mapping.keys())
+    bare_names = alternates(list(mapping.keys()))
 
     yield """name_import=import_name< 'import' ((%s) |
                multiple_imports=dotted_as_names< any* (%s) any* >) >
@@ -123,7 +123,7 @@ class FixImports(fixer_base.BaseFix):
         import_mod = results.get("module_name")
         if import_mod:
             mod_name = import_mod.value
-            new_name = unicode(self.mapping[mod_name])
+            new_name = str(self.mapping[mod_name])
             import_mod.replace(Name(new_name, prefix=import_mod.prefix))
             if "name_import" in results:
                 # If it's not a "from x import x, y" or "import x as y" import,

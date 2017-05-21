@@ -13,7 +13,7 @@
    for IPython 0.11 to 1.0+.
 """
 
-from __future__ import print_function
+
 
 import os
 import codeop
@@ -68,9 +68,9 @@ def create_editor_hook(pydev_host, pydev_client_port):
 
         if wait:
             try:
-                raw_input("Press Enter when done editing:")
-            except NameError:
                 input("Press Enter when done editing:")
+            except NameError:
+                eval(input("Press Enter when done editing:"))
     return call_editor
 
 

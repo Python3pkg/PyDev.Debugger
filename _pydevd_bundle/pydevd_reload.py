@@ -327,7 +327,7 @@ class Reload:
                 return
 
             if hasattr(types, 'ClassType'):
-                classtype = (types.ClassType, type) #object is not instance of types.ClassType.
+                classtype = (type, type) #object is not instance of types.ClassType.
             else:
                 classtype = type
 
@@ -376,7 +376,7 @@ class Reload:
             newfunc.__code__
             attr_name = '__code__'
         except AttributeError:
-            newfunc.func_code
+            newfunc.__code__
             attr_name = 'func_code'
 
         old_code = getattr(oldfunc, attr_name)
@@ -389,7 +389,7 @@ class Reload:
         try:
             oldfunc.__defaults__ = newfunc.__defaults__
         except AttributeError:
-            oldfunc.func_defaults = newfunc.func_defaults
+            oldfunc.__defaults__ = newfunc.__defaults__
 
         return oldfunc
 
@@ -398,7 +398,7 @@ class Reload:
         """Update a method object."""
         # XXX What if im_func is not a function?
         if hasattr(oldmeth, 'im_func') and hasattr(newmeth, 'im_func'):
-            self._update(None, None, oldmeth.im_func, newmeth.im_func)
+            self._update(None, None, oldmeth.__func__, newmeth.__func__)
         elif hasattr(oldmeth, '__func__') and hasattr(newmeth, '__func__'):
             self._update(None, None, oldmeth.__func__, newmeth.__func__)
         return oldmeth

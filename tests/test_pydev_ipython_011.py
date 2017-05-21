@@ -162,7 +162,7 @@ class TestRunningCode(TestBase):
     
     def test_gui(self):
         try:
-            import Tkinter
+            import tkinter
         except:
             return
         else:
@@ -254,7 +254,7 @@ class TestRunningCode(TestBase):
             filename = 'made_up_file.py'
             self.add_exec('%edit ' + filename)
 
-            for i in xrange(10):
+            for i in range(10):
                 if called_IPythonEditor[0] == (os.path.abspath(filename), '0'):
                     break
                 time.sleep(.1)

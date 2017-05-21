@@ -7,7 +7,7 @@ from _pydevd_bundle.pydevd_constants import Null
 import unittest
 
 try:
-    import thread
+    import _thread
 except:
     import _thread as thread  # @UnresolvedImport
 
@@ -30,9 +30,9 @@ class TestCase(unittest.TestCase):
                 found['b'] = b
                 found['args'] = args
                 found['kwargs'] = kwargs
-            thread.start_new_thread(function, (1,2,3,4), {'d':1, 'e':2})
+            _thread.start_new_thread(function, (1,2,3,4), {'d':1, 'e':2})
             import time
-            for _i in xrange(20):
+            for _i in range(20):
                 if len(found) == 4:
                     break
                 time.sleep(.1)
@@ -50,7 +50,7 @@ class TestCase(unittest.TestCase):
             found = {}
 
             class F(object):
-                start_new_thread = thread.start_new_thread
+                start_new_thread = _thread.start_new_thread
 
                 def start_it(self):
                     try:
@@ -67,7 +67,7 @@ class TestCase(unittest.TestCase):
             f = F()
             f.start_it()
             import time
-            for _i in xrange(20):
+            for _i in range(20):
                 if len(found) == 4:
                     break
                 time.sleep(.1)

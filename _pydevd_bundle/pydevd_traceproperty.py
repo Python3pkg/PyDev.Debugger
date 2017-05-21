@@ -13,8 +13,8 @@ def replace_builtin_property(new_property=None):
     original = property
     if not IS_PY3K:
         try:
-            import __builtin__
-            __builtin__.__dict__['property'] = new_property
+            import builtins
+            builtins.__dict__['property'] = new_property
         except:
             if DebugInfoHolder.DEBUG_TRACE_LEVEL:
                 import traceback;traceback.print_exc() #@Reimport

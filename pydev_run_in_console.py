@@ -32,7 +32,7 @@ def run_file(file, globals=None, locals=None):
 
     sys.path.insert(0, os.path.split(file)[0])
 
-    print('Running %s'%file)
+    print(('Running %s'%file))
     pydev_imports.execfile(file, globals, locals)  # execute the script
 
     return globals

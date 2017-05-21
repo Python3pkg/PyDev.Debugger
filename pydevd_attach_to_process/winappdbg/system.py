@@ -35,7 +35,7 @@ System settings.
     System
 """
 
-from __future__ import with_statement
+
 
 __revision__ = "$Id$"
 
@@ -962,7 +962,7 @@ class System (_ProcessContainer):
         except KeyError:
             return []
 
-        return [name for (name, enabled) in key.items() if enabled]
+        return [name for (name, enabled) in list(key.items()) if enabled]
 
     @classmethod
     def set_postmortem_debugger(cls, cmdline,

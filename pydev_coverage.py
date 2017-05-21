@@ -17,9 +17,9 @@ def execute():
             #given in the java side, let's just gather that info here).
             sys.argv.remove('--pydev-analyze')
             try:
-                s = raw_input()
-            except:
                 s = input()
+            except:
+                s = eval(input())
             s = s.replace('\r', '')
             s = s.replace('\n', '')
             files = s.split('|')

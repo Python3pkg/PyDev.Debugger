@@ -2,7 +2,7 @@ if __name__ == '__main__':
     import subprocess
     import sys
     import os
-    import _debugger_case_remote_2
+    from . import _debugger_case_remote_2
     root_dirname = os.path.dirname(os.path.dirname(__file__))
 
     if root_dirname not in sys.path:

@@ -11,7 +11,7 @@ To run this:
 if __name__ == '__main__':
     
     try:
-        from Tkinter import *
+        from tkinter import *
     except:
         # Python 3
         from tkinter import *

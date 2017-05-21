@@ -42,10 +42,10 @@ if PY3:
 
     MAXSIZE = sys.maxsize
 else:
-    string_types = basestring,
-    integer_types = (int, long)
-    class_types = (type, types.ClassType)
-    text_type = unicode
+    string_types = str,
+    integer_types = (int, int)
+    class_types = (type, type)
+    text_type = str
     binary_type = str
 
     if sys.platform.startswith("java"):
@@ -69,7 +69,7 @@ else:
 
 if PY3:
     xrange = range
-    unicode = str
+    str = str
     bytes = bytes
     def iterkeys(d, **kw):
         if hasattr(d, 'iterkeys'):
@@ -94,7 +94,7 @@ if PY3:
     def keys(d, **kw):
         return list(iterkeys(d, **kw))
 else:
-    unicode = unicode
+    str = str
     xrange = xrange
     bytes = str
     def keys(d, **kw):
@@ -152,7 +152,7 @@ if PY3:
         return s
     def u(s):
         return s
-    unichr = chr
+    chr = chr
     if sys.version_info[1] <= 1:
         def int2byte(i):
             return bytes((i,))
@@ -170,8 +170,8 @@ else:
         return s
     # Workaround for standalone backslash
     def u(s):
-        return unicode(s.replace(r'\\', r'\\\\'), "unicode_escape")
-    unichr = unichr
+        return str(s.replace(r'\\', r'\\\\'), "unicode_escape")
+    chr = chr
     int2byte = chr
     def byte2int(bs):
         return ord(bs[0])
@@ -179,5 +179,5 @@ else:
         return ord(buf[i])
     def iterbytes(buf):
         return (ord(byte) for byte in buf)
-    import StringIO
-    StringIO = BytesIO = StringIO.StringIO
+    import io
+    StringIO = BytesIO = io.StringIO

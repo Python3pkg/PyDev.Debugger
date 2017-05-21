@@ -298,7 +298,7 @@ class DjangoTemplateFrame:
         res = {}
         try:
             for d in context.dicts:
-                for k, v in d.items():
+                for k, v in list(d.items()):
                     res[k] = v
         except  AttributeError:
             pass
@@ -306,7 +306,7 @@ class DjangoTemplateFrame:
 
     def _change_variable(self, name, value):
         for d in self.back_context.dicts:
-            for k, v in d.items():
+            for k, v in list(d.items()):
                 if k == name:
                     d[k] = value
 

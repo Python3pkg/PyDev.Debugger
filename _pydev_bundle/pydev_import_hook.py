@@ -26,7 +26,7 @@ class ImportHookManager(ModuleType):
         return module
 
 try:
-    import __builtin__ as builtins
+    import builtins as builtins
 except ImportError:
     import builtins
 

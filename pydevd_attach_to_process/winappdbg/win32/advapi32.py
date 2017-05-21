@@ -640,7 +640,7 @@ class WaitChainNodeInfo (object):
             self.ThreadId = aStructure.u.ThreadObject.ThreadId
             self.WaitTime = aStructure.u.ThreadObject.WaitTime
             self.ContextSwitches = aStructure.u.ThreadObject.ContextSwitches
-            self.ObjectName = u''
+            self.ObjectName = ''
         else:
             self.ObjectName = aStructure.u.LockObject.ObjectName.value
             #self.Timeout = aStructure.u.LockObject.Timeout
@@ -714,13 +714,13 @@ SAFER_TOKEN_MASK          = 15
 
 SC_HANDLE = HANDLE
 
-SERVICES_ACTIVE_DATABASEW = u"ServicesActive"
-SERVICES_FAILED_DATABASEW = u"ServicesFailed"
+SERVICES_ACTIVE_DATABASEW = "ServicesActive"
+SERVICES_FAILED_DATABASEW = "ServicesFailed"
 
 SERVICES_ACTIVE_DATABASEA = "ServicesActive"
 SERVICES_FAILED_DATABASEA = "ServicesFailed"
 
-SC_GROUP_IDENTIFIERW = u'+'
+SC_GROUP_IDENTIFIERW = '+'
 SC_GROUP_IDENTIFIERA = '+'
 
 SERVICE_NO_CHANGE = 0xffffffff
@@ -1152,7 +1152,7 @@ def GetUserNameW():
     error = GetLastError()
     if error != ERROR_INSUFFICIENT_BUFFER:
         raise ctypes.WinError(error)
-    lpBuffer = ctypes.create_unicode_buffer(u'', nSize.value + 1)
+    lpBuffer = ctypes.create_unicode_buffer('', nSize.value + 1)
     success = _GetUserNameW(lpBuffer, byref(nSize))
     if not success:
         raise ctypes.WinError()
@@ -1212,8 +1212,8 @@ def LookupAccountSidW(lpSystemName, lpSid):
     error = GetLastError()
     if error != ERROR_INSUFFICIENT_BUFFER:
         raise ctypes.WinError(error)
-    lpName = ctypes.create_unicode_buffer(u'', cchName + 1)
-    lpReferencedDomainName = ctypes.create_unicode_buffer(u'', cchReferencedDomainName + 1)
+    lpName = ctypes.create_unicode_buffer('', cchName + 1)
+    lpReferencedDomainName = ctypes.create_unicode_buffer('', cchReferencedDomainName + 1)
     success = _LookupAccountSidW(lpSystemName, lpSid, lpName, byref(cchName), lpReferencedDomainName, byref(cchReferencedDomainName), byref(peUse))
     if not success:
         raise ctypes.WinError()
@@ -1470,7 +1470,7 @@ def LookupPrivilegeNameW(lpSystemName, lpLuid):
 
     cchName = DWORD(0)
     _LookupPrivilegeNameW(lpSystemName, byref(lpLuid), NULL, byref(cchName))
-    lpName = ctypes.create_unicode_buffer(u"", cchName.value)
+    lpName = ctypes.create_unicode_buffer("", cchName.value)
     _LookupPrivilegeNameW(lpSystemName, byref(lpLuid), byref(lpName), byref(cchName))
     return lpName.value
 
@@ -1969,7 +1969,7 @@ def SaferiIsExecutableFileType(szFullPath, bFromShellExecute = False):
     _SaferiIsExecutableFileType.errcheck = RaiseIfLastError
 
     SetLastError(ERROR_SUCCESS)
-    return bool(_SaferiIsExecutableFileType(compat.unicode(szFullPath), bFromShellExecute))
+    return bool(_SaferiIsExecutableFileType(compat.str(szFullPath), bFromShellExecute))
 
 # useful alias since I'm likely to misspell it :P
 SaferIsExecutableFileType = SaferiIsExecutableFileType
@@ -2216,7 +2216,7 @@ def _internal_RegQueryValueEx(ansi, hKey, lpValueName = None, bGetData = True):
     if Type == REG_QWORD:   # REG_QWORD_LITTLE_ENDIAN
         if cbData.value != 8:
             raise ValueError("REG_QWORD value of size %d" % cbData.value)
-        qwData = QWORD(long(0))
+        qwData = QWORD(int(0))
         _RegQueryValueEx(hKey, lpValueName, None, None, byref(qwData), byref(cbData))
         return qwData.value, Type
 
@@ -2238,7 +2238,7 @@ def _internal_RegQueryValueEx(ansi, hKey, lpValueName = None, bGetData = True):
         if ansi:
             aData = Data.split('\0')
         else:
-            aData = Data.split(u'\0')
+            aData = Data.split('\0')
         aData = [token for token in aData if token]
         return aData, Type
 
@@ -2311,7 +2311,7 @@ def RegSetValueEx(hKey, lpValueName = None, lpData = None, dwType = None):
             dwType = REG_SZ
         elif isinstance(lpData, int):
             dwType = REG_DWORD
-        elif isinstance(lpData, long):
+        elif isinstance(lpData, int):
             dwType = REG_QWORD
         else:
             dwType = REG_BINARY
@@ -2344,7 +2344,7 @@ def RegSetValueEx(hKey, lpValueName = None, lpData = None, dwType = None):
             if ansi:
                 Data = ctypes.create_string_buffer('\0'.join(lpData) + '\0\0')
             else:
-                Data = ctypes.create_unicode_buffer(u'\0'.join(lpData) + u'\0\0')
+                Data = ctypes.create_unicode_buffer('\0'.join(lpData) + '\0\0')
         elif dwType == REG_LINK:
             Data = ctypes.create_unicode_buffer(lpData)
         else:
@@ -2473,7 +2473,7 @@ def _internal_RegEnumValue(ansi, hKey, dwIndex, bGetData = True):
             elif Type == REG_QWORD:   # REG_QWORD_LITTLE_ENDIAN
                 if cbData.value != sizeof(QWORD):
                     raise ValueError("REG_QWORD value of size %d" % cbData.value)
-                Data = QWORD(long(0))
+                Data = QWORD(int(0))
 
             elif Type in (REG_SZ, REG_EXPAND_SZ, REG_MULTI_SZ):
                 if ansi:
@@ -2508,7 +2508,7 @@ def _internal_RegEnumValue(ansi, hKey, dwIndex, bGetData = True):
         if ansi:
             aData = sData.split('\0')
         else:
-            aData = sData.split(u'\0')
+            aData = sData.split('\0')
         aData = [token for token in aData if token]
         return lpValueName.value, dwType.value, aData
 

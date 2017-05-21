@@ -1,5 +1,5 @@
 try:
-    import StringIO
+    import io
 except:
     import io as StringIO
 
@@ -140,7 +140,7 @@ class Info:
         args = self.args
         if sys.version_info[0] <= 2:
             # Supress the u''
-            args = [arg.encode('utf-8') if isinstance(arg, unicode) else arg for arg in args]
+            args = [arg.encode('utf-8') if isinstance(arg, str) else arg for arg in args]
         s = 'function:%s args=%s, varargs=%s, kwargs=%s, docs:%s' % \
             (self.name, args, self.varargs, self.kwargs, self.doc)
         return s
@@ -219,8 +219,8 @@ def ismethod(func):
                     varkw = func_code.co_varnames[nargs]
                 return args, varargs, varkw
 
-            args = getargs(func.func_code)
-            return 1, [Info(func.func_name, args=args[0], varargs=args[1], kwargs=args[2], doc=func.func_doc)]
+            args = getargs(func.__code__)
+            return 1, [Info(func.__name__, args=args[0], varargs=args[1], kwargs=args[2], doc=func.__doc__)]
 
         if isinstance(func, core.PyMethod):
             #this is something from java itself, and jython just wrapped it...
@@ -230,7 +230,7 @@ def ismethod(func):
             #'im_func', 'im_self', 'toString']
             #print_ '    PyMethod'
             #that's the PyReflectedFunction... keep going to get it
-            func = func.im_func
+            func = func.__func__
 
         if isinstance(func, PyReflectedFunction):
             #this is something from java itself, and jython just wrapped it...
@@ -238,7 +238,7 @@ def ismethod(func):
             #print_ '    PyReflectedFunction'
 
             infos = []
-            for i in xrange(len(func.argslist)):
+            for i in range(len(func.argslist)):
                 #things to play in func.argslist[i]:
 
                 #'PyArgsCall', 'PyArgsKeywordsCall', 'REPLACE', 'StandardCall', 'args', 'compare', 'compareTo', 'data', 'declaringClass'
@@ -257,7 +257,7 @@ def ismethod(func):
                     parameterTypes = met.getParameterTypes()
 
                     args = []
-                    for j in xrange(len(parameterTypes)):
+                    for j in range(len(parameterTypes)):
                         paramTypesClass = parameterTypes[j]
                         try:
                             try:
@@ -288,7 +288,7 @@ def ismethod(func):
 
             return 1, infos
     except Exception:
-        s = StringIO.StringIO()
+        s = io.StringIO()
         traceback.print_exc(file=s)
         return 1, [Info(str('ERROR'), doc=s.getvalue())]
 
@@ -344,12 +344,12 @@ def dir_obj(obj):
                 except TypeError:
                     declaredFields = obj.getDeclaredFields(obj)
 
-                for i in xrange(len(declaredMethods)):
+                for i in range(len(declaredMethods)):
                     name = declaredMethods[i].getName()
                     ret.append(name)
                     found.put(name, 1)
 
-                for i in xrange(len(declaredFields)):
+                for i in range(len(declaredFields)):
                     name = declaredFields[i].getName()
                     ret.append(name)
                     found.put(name, 1)
@@ -425,7 +425,7 @@ def generate_imports_tip_for_module(obj_to_complete, dir_comps=None, getattr=get
         if d is None:
             continue
 
-        if not filter(d):
+        if not list(filter(d)):
             continue
 
         args = ''

@@ -75,10 +75,10 @@ class UserModuleDeleter:
         """
         log = []
         modules_copy = dict(sys.modules)
-        for modname, module in modules_copy.items():
+        for modname, module in list(modules_copy.items()):
             if modname == 'aaaaa':
-                print(modname, module)
-                print(self.previous_modules)
+                print((modname, module))
+                print((self.previous_modules))
             if modname not in self.previous_modules:
                 modpath = getattr(module, '__file__', None)
                 if modpath is None:
@@ -90,8 +90,8 @@ class UserModuleDeleter:
                     log.append(modname)
                     del sys.modules[modname]
         if verbose and log:
-            print("\x1b[4;33m%s\x1b[24m%s\x1b[0m" % ("UMD has deleted",
-                                                     ": " + ", ".join(log)))
+            print(("\x1b[4;33m%s\x1b[24m%s\x1b[0m" % ("UMD has deleted",
+                                                     ": " + ", ".join(log))))
 
 __umd__ = None
 
@@ -144,7 +144,7 @@ def runfile(filename, args=None, wdir=None, namespace=None):
         else:
             verbose = os.environ.get("PYDEV_UMD_VERBOSE", "").lower() == "true"
             __umd__.run(verbose=verbose)
-    if args is not None and not isinstance(args, basestring):
+    if args is not None and not isinstance(args, str):
         raise TypeError("expected a character buffer object")
     if namespace is None:
         namespace = _get_globals()
@@ -164,7 +164,7 @@ def runfile(filename, args=None, wdir=None, namespace=None):
         except (UnicodeError, TypeError):
             pass
         os.chdir(wdir)
-    execfile(filename, namespace)
+    exec(compile(open(filename).read(), filename, 'exec'), namespace)
     sys.argv = ['']
     if old_file is None:
         del namespace['__file__']

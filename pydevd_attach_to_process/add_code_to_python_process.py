@@ -283,7 +283,7 @@ def run_python_code_windows(pid, python_code, connect_debugger_tracing=False, sh
         "Target 64 bits: %s\n"
         "Current Python 64 bits: %s" % (is_64, is_python_64bit()))
 
-    print('Connecting to %s bits target' % (bits,))
+    print(('Connecting to %s bits target' % (bits,)))
     assert resolve_label(process, compat.b('PyGILState_Ensure'))
 
 
@@ -388,7 +388,7 @@ def run_python_code_windows(pid, python_code, connect_debugger_tracing=False, sh
     if return_code == 0:
         print('Attach finished successfully.')
     else:
-        print('Error when injecting code in target process. Error code: %s (on windows)' % (return_code,))
+        print(('Error when injecting code in target process. Error code: %s (on windows)' % (return_code,)))
 
     process.free(thread.pInjectedMemory)
     process.free(code_address)
@@ -411,7 +411,7 @@ def run_python_code_linux(pid, python_code, connect_debugger_tracing=False, show
         suffix = 'x86'
         arch = 'i386'
 
-    print('Attaching with arch: %s'% (arch,))
+    print(('Attaching with arch: %s'% (arch,)))
 
     target_dll = os.path.join(filedir, 'attach_linux_%s.so' % suffix)
     target_dll = os.path.abspath(os.path.normpath(target_dll))
@@ -458,7 +458,7 @@ def run_python_code_linux(pid, python_code, connect_debugger_tracing=False, show
     # have the PYTHONPATH for a different python version or some forced encoding).
     env.pop('PYTHONIOENCODING', None)
     env.pop('PYTHONPATH', None)
-    print('Running: %s' % (' '.join(cmd)))
+    print(('Running: %s' % (' '.join(cmd))))
     p = subprocess.Popen(
         ' '.join(cmd),
         shell=True,
@@ -468,8 +468,8 @@ def run_python_code_linux(pid, python_code, connect_debugger_tracing=False, show
     )
     print('Running gdb in target process.')
     out, err = p.communicate()
-    print('stdout: %s' % (out,))
-    print('stderr: %s' % (err,))
+    print(('stdout: %s' % (out,)))
+    print(('stderr: %s' % (err,)))
     return out, err
 
 
@@ -497,7 +497,7 @@ def run_python_code_mac(pid, python_code, connect_debugger_tracing=False, show_d
         suffix = 'x86.dylib'
         arch = 'i386'
 
-    print('Attaching with arch: %s'% (arch,))
+    print(('Attaching with arch: %s'% (arch,)))
 
     target_dll = os.path.join(filedir, 'attach_%s' % suffix)
     target_dll = os.path.normpath(target_dll)
@@ -549,7 +549,7 @@ def run_python_code_mac(pid, python_code, connect_debugger_tracing=False, show_d
     # have the PYTHONPATH for a different python version or some forced encoding).
     env.pop('PYTHONIOENCODING', None)
     env.pop('PYTHONPATH', None)
-    print('Running: %s' % (' '.join(cmd)))
+    print(('Running: %s' % (' '.join(cmd))))
     p = subprocess.Popen(
         ' '.join(cmd),
         shell=True,
@@ -559,8 +559,8 @@ def run_python_code_mac(pid, python_code, connect_debugger_tracing=False, show_d
         )
     print('Running lldb in target process.')
     out, err = p.communicate()
-    print('stdout: %s' % (out,))
-    print('stderr: %s' % (err,))
+    print(('stdout: %s' % (out,)))
+    print(('stderr: %s' % (err,)))
     return out, err
 
 
@@ -572,7 +572,7 @@ else:
     run_python_code = run_python_code_linux
 
 def test():
-    print('Running with: %s' % (sys.executable,))
+    print(('Running with: %s' % (sys.executable,)))
     code = '''
 import os, time, sys
 print(os.getpid())

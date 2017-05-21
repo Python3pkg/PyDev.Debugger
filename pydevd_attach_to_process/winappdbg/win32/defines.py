@@ -106,10 +106,10 @@ if WIN32_VERBOSE_MODE:
             self.__copy_attribute('argtypes')
             self.__copy_attribute('restype')
             self.__copy_attribute('errcheck')
-            print("-"*10)
-            print("%s ! %s %r" % (self.__dllname, self.__funcname, argv))
+            print(("-"*10))
+            print(("%s ! %s %r" % (self.__dllname, self.__funcname, argv)))
             retval = self.__func(*argv)
-            print("== %r" % (retval,))
+            print(("== %r" % (retval,)))
             return retval
 
     windll = WinDllHook()
@@ -182,7 +182,7 @@ class GuessStringType(object):
 
     # ANSI and Unicode types
     t_ansi    = type('')
-    t_unicode = type(u'')
+    t_unicode = type('')
 
     # Default is ANSI for Python 2.x
     t_default = t_ansi
@@ -235,10 +235,10 @@ class GuessStringType(object):
                 argv = list(argv)
                 for index in compat.xrange(len(argv)):
                     if v_types[index] == t_ansi:
-                        argv[index] = compat.unicode(argv[index])
-                for (key, value) in argd.items():
+                        argv[index] = compat.str(argv[index])
+                for (key, value) in list(argd.items()):
                     if type(value) == t_ansi:
-                        argd[key] = compat.unicode(value)
+                        argd[key] = compat.str(value)
 
             # Use the W version
             fn = self.fn_unicode
@@ -319,7 +319,7 @@ def MakeANSIVersion(fn):
             for index in compat.xrange(len(argv)):
                 if v_types[index] == t_ansi:
                     argv[index] = t_unicode(argv[index])
-            for key, value in argd.items():
+            for key, value in list(argd.items()):
                 if type(value) == t_ansi:
                     argd[key] = t_unicode(value)
         return fn(*argv, **argd)
@@ -343,7 +343,7 @@ def MakeWideVersion(fn):
             for index in compat.xrange(len(argv)):
                 if v_types[index] == t_unicode:
                     argv[index] = t_ansi(argv[index])
-            for key, value in argd.items():
+            for key, value in list(argd.items()):
                 if type(value) == t_unicode:
                     argd[key] = t_ansi(value)
         return fn(*argv, **argd)
@@ -653,17 +653,17 @@ import sys
 if sys.version_info[0] >= 3:
     long = int
 
-DELETE                           = long(0x00010000)
-READ_CONTROL                     = long(0x00020000)
-WRITE_DAC                        = long(0x00040000)
-WRITE_OWNER                      = long(0x00080000)
-SYNCHRONIZE                      = long(0x00100000)
-STANDARD_RIGHTS_REQUIRED         = long(0x000F0000)
+DELETE                           = int(0x00010000)
+READ_CONTROL                     = int(0x00020000)
+WRITE_DAC                        = int(0x00040000)
+WRITE_OWNER                      = int(0x00080000)
+SYNCHRONIZE                      = int(0x00100000)
+STANDARD_RIGHTS_REQUIRED         = int(0x000F0000)
 STANDARD_RIGHTS_READ             = READ_CONTROL
 STANDARD_RIGHTS_WRITE            = READ_CONTROL
 STANDARD_RIGHTS_EXECUTE          = READ_CONTROL
-STANDARD_RIGHTS_ALL              = long(0x001F0000)
-SPECIFIC_RIGHTS_ALL              = long(0x0000FFFF)
+STANDARD_RIGHTS_ALL              = int(0x001F0000)
+SPECIFIC_RIGHTS_ALL              = int(0x0000FFFF)
 
 #--- Structures ---------------------------------------------------------------
 

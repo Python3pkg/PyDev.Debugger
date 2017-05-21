@@ -1,4 +1,4 @@
-from __future__ import nested_scopes
+
 
 def set_trace_in_qt():
     import pydevd_tracing
@@ -90,7 +90,7 @@ def _patch_import_to_patch_pyqt_on_import(patch_qt_on_import, get_qt_core_module
     try:
         import builtins
     except ImportError:
-        import __builtin__ as builtins
+        import builtins as builtins
     builtins.__import__ = patched_import
 
 

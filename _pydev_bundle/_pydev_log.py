@@ -1,7 +1,7 @@
 import traceback
 import sys
 try:
-    import StringIO
+    import io
 except:
     import io as StringIO #Python 3.0
     
@@ -15,7 +15,7 @@ class Log:
         self._contents.append(' '.join(content))
         
     def add_exception(self):
-        s = StringIO.StringIO()
+        s = io.StringIO()
         exc_info = sys.exc_info()
         traceback.print_exception(exc_info[0], exc_info[1], exc_info[2], limit=None, file=s)
         self._contents.append(s.getvalue())

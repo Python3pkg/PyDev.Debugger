@@ -154,7 +154,7 @@ def GenerateImportsTipForModule(obj_to_complete, dirComps=None, getattr=getattr,
         if d is None:
             continue
 
-        if not filter(d):
+        if not list(filter(d)):
             continue
 
         args = ''
@@ -277,4 +277,4 @@ def %(method_name)s%(args)s:
         for line in doc.splitlines():
             lines.append('    ' + line)
         doc = '\n'.join(lines)
-        print temp % dict(method_name=entry[0], args=entry[2] or '(self)', doc=doc)
+        print(temp % dict(method_name=entry[0], args=entry[2] or '(self)', doc=doc))

@@ -30,7 +30,7 @@ def patched_reload(orig_reload):
 
 def patch_reload():
     try:
-        import __builtin__ as builtins
+        import builtins as builtins
     except ImportError:
         import builtins
 
@@ -57,7 +57,7 @@ def patch_reload():
 def cancel_patches_in_sys_module():
     sys.exc_info = sys.system_exc_info  # @UndefinedVariable
     try:
-        import __builtin__ as builtins
+        import builtins as builtins
     except ImportError:
         import builtins
 

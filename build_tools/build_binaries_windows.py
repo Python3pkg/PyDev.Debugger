@@ -107,7 +107,7 @@ deactivate
 
 '''
 
-from __future__ import unicode_literals
+
 import os
 import subprocess
 import sys
@@ -156,15 +156,15 @@ def main():
 
     for i, python_install in enumerate(python_installations):
         print()
-        print('*'*80)
-        print('*'*80)
+        print(('*'*80))
+        print(('*'*80))
         print()
         new_name = 'pydevd_cython_%s_%s' % (sys.platform, extract_version(python_install))
         args = [
             python_install, os.path.join(root_dir, 'build_tools', 'build.py'), '--no-remove-binaries', '--target-pyd-name=%s' % new_name, '--force-cython']
         if i != 0:
             args.append('--no-regenerate-files')
-        print('Calling: %s' % (' '.join(args)))
+        print(('Calling: %s' % (' '.join(args))))
         subprocess.check_call(args)
 
 

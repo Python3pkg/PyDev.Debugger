@@ -13,7 +13,7 @@ backends = {'tk': 'TkAgg',
 # GUI support to activate based on the desired matplotlib backend.  For the
 # most part it's just a reverse of the above dict, but we also need to add a
 # few others that map to the same GUI manually:
-backend2gui = dict(zip(backends.values(), backends.keys()))
+backend2gui = dict(list(zip(list(backends.values()), list(backends.keys()))))
 backend2gui['Qt4Agg'] = 'qt'
 # In the reverse mapping, there are a few extra valid matplotlib backends that
 # map to the same GUI support

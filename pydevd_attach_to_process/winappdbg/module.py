@@ -38,7 +38,7 @@ Module instrumentation.
     DebugSymbolsWarning
 """
 
-from __future__ import with_statement
+
 
 __revision__ = "$Id$"
 
@@ -342,7 +342,7 @@ class Module (object):
         pathname = self.get_filename()
         if pathname:
             modName = self.__filename_to_modname(pathname)
-            if isinstance(modName, compat.unicode):
+            if isinstance(modName, compat.str):
                 try:
                     modName = modName.encode('cp1252')
                 except UnicodeEncodeError:
@@ -1015,7 +1015,7 @@ class _ModuleContainer (object):
         """
         bases = self.get_module_bases()
         bases.sort()
-        bases.append(long(0x10000000000000000))  # max. 64 bit address + 1
+        bases.append(int(0x10000000000000000))  # max. 64 bit address + 1
         if address >= bases[0]:
             i = 0
             max_i = len(bases) - 1

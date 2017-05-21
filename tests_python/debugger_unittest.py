@@ -1,5 +1,5 @@
 try:
-    from urllib import quote, quote_plus, unquote_plus
+    from urllib.parse import quote, quote_plus, unquote_plus
 except ImportError:
     from urllib.parse import quote, quote_plus, unquote_plus #@UnresolvedImport
 
@@ -83,7 +83,7 @@ SHOW_STDOUT = True
 
 
 try:
-    from thread import start_new_thread
+    from _thread import start_new_thread
 except ImportError:
     from _thread import start_new_thread  # @UnresolvedImport
 
@@ -103,7 +103,7 @@ class ReaderThread(threading.Thread):
         try:
             from queue import Queue
         except ImportError:
-            from Queue import Queue
+            from queue import Queue
             
         self.setDaemon(True)
         self.sock = sock
@@ -141,7 +141,7 @@ class ReaderThread(threading.Thread):
                     buf = buf[i:]
 
                     if SHOW_WRITES_AND_READS:
-                        print('Test Reader Thread Received %s' % (last_received, ))
+                        print(('Test Reader Thread Received %s' % (last_received, )))
                         
                     self._queue.put(last_received)
         except:
@@ -188,7 +188,7 @@ class DebuggerRunner(object):
         writer_thread = writer_thread_class()
         try:
             writer_thread.start()
-            for _i in xrange(40000):
+            for _i in range(40000):
                 if hasattr(writer_thread, 'port'):
                     break
                 time.sleep(.01)
@@ -199,7 +199,7 @@ class DebuggerRunner(object):
             args = self.add_command_line_args(args)
 
             if SHOW_OTHER_DEBUG_INFO:
-                print('executing', ' '.join(args))
+                print(('executing', ' '.join(args)))
 
             ret = self.run_process(args, writer_thread)
         finally:
@@ -260,7 +260,7 @@ class DebuggerRunner(object):
                                 continue
 
                             if not shown_intermediate and (time.time() - initial_time > 10):
-                                print('Warning: writer thread exited and process still did not (%.2fs seconds elapsed).' % (time.time() - initial_time,))
+                                print(('Warning: writer thread exited and process still did not (%.2fs seconds elapsed).' % (time.time() - initial_time,)))
                                 shown_intermediate = True
                                 
                             if time.time() - initial_time > 20:
@@ -292,7 +292,7 @@ class DebuggerRunner(object):
                             self.fail_with_message("TEST SUCEEDED not found in stdout.", stdout, stderr, writer_thread)
                         time.sleep(.1)
 
-                for _i in xrange(100):
+                for _i in range(100):
                     if not writer_thread.finished_ok:
                         time.sleep(.1)
 
@@ -358,7 +358,7 @@ class AbstractWriterThread(threading.Thread):
         self.log.append('write: %s' % (s,))
 
         if SHOW_WRITES_AND_READS:
-            print('Test Writer Thread Written %s' % (s,))
+            print(('Test Writer Thread Written %s' % (s,)))
         msg = s + '\n'
         if IS_PY3K:
             msg = msg.encode('utf-8')
@@ -383,7 +383,7 @@ class AbstractWriterThread(threading.Thread):
         self.server_socket = s
         newSock, addr = s.accept()
         if SHOW_WRITES_AND_READS:
-            print('Test Writer Thread Socket:', newSock, addr)
+            print(('Test Writer Thread Socket:', newSock, addr))
 
         reader_thread = self.reader_thread = ReaderThread(newSock)
         reader_thread.start()

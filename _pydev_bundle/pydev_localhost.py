@@ -61,4 +61,4 @@ def get_socket_name(close=False):
     return get_socket_names(1, close)[0]
 
 if __name__ == '__main__':
-    print(get_socket_name())
+    print((get_socket_name()))

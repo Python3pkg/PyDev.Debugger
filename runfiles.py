@@ -107,7 +107,7 @@ def main():
         if files_to_tests:
             # Handling through the file contents (file where each line is a test)
             files_or_dirs = []
-            for file, tests in files_to_tests.items():
+            for file, tests in list(files_to_tests.items()):
                 if test_framework == NOSE_FRAMEWORK:
                     for test in tests:
                         files_or_dirs.append(file + ':' + test)
@@ -187,7 +187,7 @@ def main():
                     os.chdir(path)
                     break
 
-            for i in xrange(len(argv)):
+            for i in range(len(argv)):
                 arg = argv[i]
                 # Workaround bug in py.test: if we pass the full path it ends up importing conftest
                 # more than once (so, always work with relative paths).
@@ -265,7 +265,7 @@ if __name__ == '__main__':
                     'pydev pyunit runner: Threads still found running after tests finished',
                     '================================= Thread Dump =================================']
 
-                for thread_id, stack in sys._current_frames().items():
+                for thread_id, stack in list(sys._current_frames().items()):
                     stack_trace.append('\n-------------------------------------------------------------------------------')
                     stack_trace.append(" Thread %s" % thread_id_to_name.get(thread_id, thread_id))
                     stack_trace.append('')

@@ -105,6 +105,7 @@ import sys
 import ctypes
 import warnings
 import traceback
+import collections
 
 #==============================================================================
 
@@ -1402,7 +1403,7 @@ class EventHandler (object):
         for lib, hooks in compat.iteritems(self.apiHooks):
             hook_objs = []
             for proc, args in hooks:
-                if type(args) in (int, long):
+                if type(args) in (int, int):
                     h = ApiHook(self, lib, proc, paramCount = args)
                 else:
                     h = ApiHook(self, lib, proc,  signature = args)
@@ -1739,7 +1740,7 @@ class EventDispatcher (object):
             However you'll probably find it more convenient to use an instance
             of a subclass of L{EventHandler} here.
         """
-        if eventHandler is not None and not callable(eventHandler):
+        if eventHandler is not None and not isinstance(eventHandler, collections.Callable):
             raise TypeError("Event handler must be a callable object")
         try:
             wrong_type = issubclass(eventHandler, EventHandler)

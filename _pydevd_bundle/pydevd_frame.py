@@ -440,7 +440,7 @@ class PyDBFrame:
     
                         for breakpoint in dict_iter_values(breakpoints_for_file): #jython does not support itervalues()
                             #will match either global or some function
-                            if breakpoint.func_name in ('None', curr_func_name):
+                            if breakpoint.__name__ in ('None', curr_func_name):
                                 has_breakpoint_in_frame = True
                                 break
                             

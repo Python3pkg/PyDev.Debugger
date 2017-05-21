@@ -4,8 +4,8 @@ dyld emulation
 """
 
 import os
-from framework import framework_info
-from dylib import dylib_info
+from .framework import framework_info
+from .dylib import dylib_info
 from itertools import *
 
 __all__ = [
@@ -31,7 +31,7 @@ DEFAULT_LIBRARY_FALLBACK = [
 
 def ensure_utf8(s):
     """Not all of PyObjC and Python understand unicode paths very well yet"""
-    if isinstance(s, unicode):
+    if isinstance(s, str):
         return s.encode('utf8')
     return s
 
@@ -133,7 +133,7 @@ def dyld_find(name, executable_path=None, env=None):
             ), env):
         if os.path.isfile(path):
             return path
-    raise ValueError, "dylib %s could not be found" % (name,)
+    raise ValueError("dylib %s could not be found" % (name,))
 
 def framework_find(fn, executable_path=None, env=None):
     """

@@ -33,12 +33,12 @@ def find_matches():
     found = set()
     for path, initial_contents in iter_files_in_dir(os.path.dirname(os.path.dirname(__file__))):
         found.update(find_matches_in_contents(initial_contents))
-    print '\n'.join(sorted(found))
-    print 'Total', len(found)
+    print('\n'.join(sorted(found)))
+    print('Total', len(found))
 
 def substitute_contents(re_name_to_new_val, initial_contents):
     contents = initial_contents
-    for key, val in re_name_to_new_val.iteritems():
+    for key, val in re_name_to_new_val.items():
         contents = re.sub(key, val, contents)
     return contents
 
@@ -48,9 +48,9 @@ def make_replace():
     for path, initial_contents in iter_files_in_dir(os.path.dirname(os.path.dirname(__file__))):
         contents = substitute_contents(re_name_to_new_val, initial_contents)
         if contents != initial_contents:
-            print 'Changed something at: %s' % (path,)
+            print('Changed something at: %s' % (path,))
 
-            for val in re_name_to_new_val.itervalues():
+            for val in re_name_to_new_val.values():
                 # Check in initial contents to see if it already existed!
                 if re.findall(r'\b%s\b' % (val,), initial_contents):
                     raise AssertionError('Error in:\n%s\n%s is already being used (and changes may conflict).' % (path, val,))

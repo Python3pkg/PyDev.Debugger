@@ -54,9 +54,9 @@ from sqlalchemy.types import Integer, BigInteger, Boolean, DateTime, String, \
                              LargeBinary, Enum, VARCHAR
 from sqlalchemy.sql.expression import asc, desc
 
-from crash import Crash, Marshaller, pickle, HIGHEST_PROTOCOL
-from textio import CrashDump
-import win32
+from .crash import Crash, Marshaller, pickle, HIGHEST_PROTOCOL
+from .textio import CrashDump
+from . import win32
 
 #------------------------------------------------------------------------------
 
@@ -685,7 +685,7 @@ class CrashDTO (BaseDTO):
 
         # Environment.
         if crash.environment:
-            envList = crash.environment.items()
+            envList = list(crash.environment.items())
             envList.sort()
             environment = ''
             for envKey, envVal in envList:

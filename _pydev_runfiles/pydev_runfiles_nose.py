@@ -95,7 +95,7 @@ class PydevPlugin(Plugin):
                 if len(err) == 2:
                     return err[1]  # multiprocess
             try:
-                from StringIO import StringIO
+                from io import StringIO
             except:
                 from io import StringIO
             s = StringIO()

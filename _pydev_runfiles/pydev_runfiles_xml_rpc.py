@@ -220,7 +220,7 @@ def _encode_if_needed(obj):
             except:
                 return xmlrpclib.Binary(obj)
 
-        elif isinstance(obj, unicode):
+        elif isinstance(obj, str):
             return xmlrpclib.Binary(obj.encode('ISO-8859-1', 'xmlcharrefreplace'))
 
     else:

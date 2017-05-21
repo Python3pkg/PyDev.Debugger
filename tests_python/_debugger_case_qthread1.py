@@ -17,7 +17,7 @@ class AThread(QtCore.QThread):
         count = 0
         while count < 5:
             time.sleep(.5)
-            print("Increasing", count);sys.stdout.flush()
+            print(("Increasing", count));sys.stdout.flush()
             count += 1
 
 app = QtCore.QCoreApplication([])

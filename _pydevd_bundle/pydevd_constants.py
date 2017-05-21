@@ -1,7 +1,7 @@
 '''
 This module holds the constants used for specifying the states of the debugger.
 '''
-from __future__ import nested_scopes
+
 
 STATE_RUN = 1
 STATE_SUSPEND = 2
@@ -113,7 +113,7 @@ def protect_libraries_from_patching():
         except:
             pass
 
-    patched_modules = dict([(k, v) for k, v in sys.modules.items()
+    patched_modules = dict([(k, v) for k, v in list(sys.modules.items())
                             if k in patched])
 
     for name in patched_modules:
@@ -143,7 +143,7 @@ if IS_PY3K:
     dict_iter_values = dict.values
 
     def dict_iter_items(d):
-        return d.items()
+        return list(d.items())
 
     def dict_items(d):
         return list(d.items())
@@ -157,7 +157,7 @@ else:
 
     if IS_JYTHON or not dict_keys:
         def dict_keys(d):
-            return d.keys()
+            return list(d.keys())
 
     try:
         dict_iter_values = dict.itervalues
@@ -166,22 +166,22 @@ else:
             dict_iter_values = dict.values #Older versions don't have the itervalues
         except:
             def dict_iter_values(d):
-                return d.values()
+                return list(d.values())
 
     try:
         dict_values = dict.values
     except:
         def dict_values(d):
-            return d.values()
+            return list(d.values())
 
     def dict_iter_items(d):
         try:
-            return d.iteritems()
+            return iter(d.items())
         except:
-            return d.items()
+            return list(d.items())
 
     def dict_items(d):
-        return d.items()
+        return list(d.items())
 
 
 try:
@@ -201,7 +201,7 @@ except:
 # StringIO
 #=======================================================================================================================
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except:
     from io import StringIO
 
@@ -300,7 +300,7 @@ class Null:
     def write(self, *args, **kwargs):
         pass
 
-    def __nonzero__(self):
+    def __bool__(self):
         return 0
 
     def __iter__(self):

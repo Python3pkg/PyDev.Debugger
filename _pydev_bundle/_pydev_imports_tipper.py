@@ -172,7 +172,7 @@ def generate_imports_tip_for_module(obj_to_complete, dir_comps=None, getattr=get
         if d is None:
             continue
 
-        if not filter(d):
+        if not list(filter(d)):
             continue
 
         args = ''
@@ -326,7 +326,7 @@ def signature_from_docstring(doc, obj_name):
                             # now, get rid of unwanted chars
                             l = len(args) - 1
                             r = []
-                            for i in xrange(len(args)):
+                            for i in range(len(args)):
                                 if i == 0 or i == l:
                                     r.append(args[i])
                                 else:

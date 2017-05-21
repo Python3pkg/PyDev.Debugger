@@ -9,7 +9,7 @@ from itertools import chain as _chain
 # XXX Remove this for the python core version
 _magicfile = _os.path.join(_os.path.dirname(__file__), ".CTYPES_DEVEL")
 if _os.path.isfile(_magicfile):
-    execfile(_magicfile)
+    exec(compile(open(_magicfile).read(), _magicfile, 'exec'))
 del _magicfile
 
 __version__ = "0.9.9.6"
@@ -24,7 +24,7 @@ from _ctypes import ArgumentError
 from struct import calcsize as _calcsize
 
 if __version__ != _ctypes_version:
-    raise Exception, ("Version number mismatch", __version__, _ctypes_version)
+    raise Exception("Version number mismatch", __version__, _ctypes_version)
 
 if _os.name in ("nt", "ce"):
     from _ctypes import FormatError
@@ -49,18 +49,18 @@ def create_string_buffer(init, size=None):
     create_string_buffer(anInteger) -> character array
     create_string_buffer(aString, anInteger) -> character array
     """
-    if isinstance(init, (str, unicode)):
+    if isinstance(init, str):
         if size is None:
             size = len(init) + 1
         buftype = c_char * size
         buf = buftype()
         buf.value = init
         return buf
-    elif isinstance(init, (int, long)):
+    elif isinstance(init, int):
         buftype = c_char * init
         buf = buftype()
         return buf
-    raise TypeError, init
+    raise TypeError(init)
 
 def c_buffer(init, size=None):
 ##    "deprecated, use create_string_buffer instead"
@@ -235,29 +235,27 @@ else:
         create_unicode_buffer(anInteger) -> character array
         create_unicode_buffer(aString, anInteger) -> character array
         """
-        if isinstance(init, (str, unicode)):
+        if isinstance(init, str):
             if size is None:
                 size = len(init) + 1
             buftype = c_wchar * size
             buf = buftype()
             buf.value = init
             return buf
-        elif isinstance(init, (int, long)):
+        elif isinstance(init, int):
             buftype = c_wchar * init
             buf = buftype()
             return buf
-        raise TypeError, init
+        raise TypeError(init)
 
 POINTER(c_char).from_param = c_char_p.from_param #_SimpleCData.c_char_p_from_param
 
 # XXX Deprecated
 def SetPointerType(pointer, cls):
     if _pointer_type_cache.get(cls, None) is not None:
-        raise RuntimeError, \
-              "This type already exists in the cache"
-    if not _pointer_type_cache.has_key(id(pointer)):
-        raise RuntimeError, \
-              "What's this???"
+        raise RuntimeError("This type already exists in the cache")
+    if id(pointer) not in _pointer_type_cache:
+        raise RuntimeError("What's this???")
     pointer.set_type(cls)
     _pointer_type_cache[cls] = pointer
     del _pointer_type_cache[id(pointer)]
@@ -306,12 +304,12 @@ class CDLL(object):
 
     def __getattr__(self, name):
         if name.startswith('__') and name.endswith('__'):
-            raise AttributeError, name
+            raise AttributeError(name)
         return self.__getitem__(name)
 
     def __getitem__(self, name_or_ordinal):
         func = self._FuncPtr((name_or_ordinal, self))
-        if not isinstance(name_or_ordinal, (int, long)):
+        if not isinstance(name_or_ordinal, int):
             func.__name__ = name_or_ordinal
             setattr(self, name_or_ordinal, func)
         return func

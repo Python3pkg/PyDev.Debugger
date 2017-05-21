@@ -271,7 +271,7 @@ class InputHookManager(object):
         self._current_gui = GUI_TK
         if app is None:
             try:
-                import Tkinter as _TK
+                import tkinter as _TK
             except:
                 # Python 3
                 import tkinter as _TK  # @UnresolvedImport
@@ -523,7 +523,7 @@ def enable_gui(gui=None, app=None):
         if gui is None or gui == '':
             gui_hook = clear_inputhook
         else:
-            e = "Invalid GUI request %r, valid ones are:%s" % (gui, guis.keys())
+            e = "Invalid GUI request %r, valid ones are:%s" % (gui, list(guis.keys()))
             raise ValueError(e)
     return gui_hook(app)
 

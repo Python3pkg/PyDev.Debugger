@@ -35,7 +35,7 @@ Registry access.
     Registry, RegistryKey
 """
 
-from __future__ import with_statement
+
 
 __revision__ = "$Id$"
 
@@ -285,8 +285,8 @@ class RegistryKey (_RegistryContainer):
         return str(default)
 
     def __unicode__(self):
-        default = self[u'']
-        return compat.unicode(default)
+        default = self['']
+        return compat.str(default)
 
     def __repr__(self):
         return '<Registry key: "%s">' % self._path
@@ -588,7 +588,7 @@ class Registry (_RegistryContainer):
     def __setitem__(self, path, value):
         do_copy = isinstance(value, RegistryKey)
         if not do_copy and not isinstance(value, str)    \
-                       and not isinstance(value, compat.unicode):
+                       and not isinstance(value, compat.str):
             if isinstance(value, object):
                 t = value.__class__.__name__
             else:
@@ -668,7 +668,7 @@ class Registry (_RegistryContainer):
         """
         if path.endswith('\\'):
             path = path[:-1]
-        if not self.has_key(path):
+        if path not in self:
             raise KeyError(path)
         stack = collections.deque()
         stack.appendleft(path)

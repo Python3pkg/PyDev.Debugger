@@ -72,6 +72,7 @@ from winappdbg.textio import HexDump
 import ctypes
 import warnings
 import traceback
+import collections
 
 #==============================================================================
 
@@ -342,7 +343,7 @@ class Breakpoint (object):
         condition = self.get_condition()
         if condition is True:   # shortcut for unconditional breakpoints
             return True
-        if callable(condition):
+        if isinstance(condition, collections.Callable):
             try:
                 return bool( condition(event) )
             except Exception:
@@ -682,7 +683,7 @@ class PageBreakpoint (Breakpoint):
         Breakpoint.__init__(self, address, pages * MemoryAddresses.pageSize,
                             condition, action)
 ##        if (address & 0x00000FFF) != 0:
-        floordiv_align = long(address) // long(MemoryAddresses.pageSize)
+        floordiv_align = int(address) // int(MemoryAddresses.pageSize)
         truediv_align  = float(address) / float(MemoryAddresses.pageSize)
         if floordiv_align != truediv_align:
             msg   = "Address of page breakpoint "               \
@@ -3739,7 +3740,7 @@ class _BreakpointContainer (object):
             couldn't be resolved and the breakpoint was deferred. Deferred
             breakpoints are set when the DLL they point to is loaded.
         """
-        if type(address) not in (int, long):
+        if type(address) not in (int, int):
             label = address
             try:
                 address = self.system.get_process(pid).resolve_label(address)
@@ -3788,7 +3789,7 @@ class _BreakpointContainer (object):
             integer value for the actual address or a string with a label
             to be resolved.
         """
-        if type(address) not in (int, long):
+        if type(address) not in (int, int):
             unknown = True
             label = address
             try:
@@ -3828,7 +3829,7 @@ class _BreakpointContainer (object):
         except KeyError:
             return
         aProcess = event.get_process()
-        for (label, (action, oneshot)) in deferred.items():
+        for (label, (action, oneshot)) in list(deferred.items()):
             try:
                 address = aProcess.resolve_label(label)
             except Exception:

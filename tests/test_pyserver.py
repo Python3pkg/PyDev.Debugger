@@ -12,7 +12,7 @@ IS_PYTHON_3K = 0
 IS_JYTHON = sys.platform.find('java') != -1
 
 try:
-    import __builtin__ #@UnusedImport
+    import builtins #@UnusedImport
     BUILTIN_MOD = '__builtin__'
 except ImportError:
     BUILTIN_MOD = 'builtins'
@@ -22,7 +22,7 @@ if not IS_JYTHON:
     import pycompletionserver
     import socket
     try:
-        from urllib import quote_plus, unquote_plus
+        from urllib.parse import quote_plus, unquote_plus
         def send(s, msg):
             s.send(msg)
     except ImportError:

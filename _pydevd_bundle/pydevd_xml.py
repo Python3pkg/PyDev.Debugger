@@ -45,12 +45,12 @@ def _create_default_type_map():
             (dict, pydevd_resolver.dictResolver),
         ]
         try:
-            default_type_map.append((long, None))  # @UndefinedVariable
+            default_type_map.append((int, None))  # @UndefinedVariable
         except:
             pass #not available on all python versions
     
         try:
-            default_type_map.append((unicode, None))  # @UndefinedVariable
+            default_type_map.append((str, None))  # @UndefinedVariable
         except:
             pass #not available on all python versions
     
@@ -335,7 +335,7 @@ def var_to_xml(val, name, doTrim=True, additional_in_xml=''):
         #fix to work with unicode values
         try:
             if not IS_PY3K:
-                if value.__class__ == unicode:  # @UndefinedVariable
+                if value.__class__ == str:  # @UndefinedVariable
                     value = value.encode('utf-8')
             else:
                 if value.__class__ == bytes:

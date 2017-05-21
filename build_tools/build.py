@@ -7,7 +7,7 @@ It should:
 
 Note that it's used in the CI to build the cython deps based on the PYDEVD_USE_CYTHON environment variable.
 '''
-from __future__ import print_function
+
 
 import os
 import subprocess
@@ -72,9 +72,9 @@ def get_environment_from_batch_command(env_cmd, initial=None):
         # define a way to handle each KEY=VALUE line
         handle_line = lambda l: l.rstrip().split('=', 1)
     # parse key/values into pairs
-    pairs = map(handle_line, lines)
+    pairs = list(map(handle_line, lines))
     # make sure the pairs are valid
-    valid_pairs = filter(validate_pair, pairs)
+    valid_pairs = list(filter(validate_pair, pairs))
     # construct a dictionary of the pairs
     result = dict(valid_pairs)
     # let the process finish

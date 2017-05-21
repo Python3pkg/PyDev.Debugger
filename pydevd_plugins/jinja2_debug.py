@@ -124,13 +124,13 @@ class Jinja2TemplateFrame:
 
     def collect_context(self, frame):
         res = {}
-        for k, v in frame.f_locals.items():
+        for k, v in list(frame.f_locals.items()):
             if not k.startswith('l_'):
                 res[k] = v
             elif v and not _is_missing(v):
                 res[k[2:]] = v
         if self.back_context is not None:
-            for k, v in self.back_context.items():
+            for k, v in list(self.back_context.items()):
                 res[k] = v
         return res
 

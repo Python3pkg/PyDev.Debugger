@@ -4,7 +4,7 @@
 import sys
 import unittest
 import socket
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import pytest
 import pycompletionserver
 
@@ -54,13 +54,13 @@ class TestJython(unittest.TestCase):
 
         try:
             #now that we have the connections all set up, check the code completion messages.
-            msg = urllib.quote_plus('math')
+            msg = urllib.parse.quote_plus('math')
 
             toWrite = '@@IMPORTS:%sEND@@' % msg
             dbg('writing' + str(toWrite))
             socket.send(toWrite)  #math completions
             completions = self.read_msg()
-            dbg(urllib.unquote_plus(completions))
+            dbg(urllib.parse.unquote_plus(completions))
 
             start = '@@COMPLETIONS('
             self.assert_(completions.startswith(start), '%s DOESNT START WITH %s' % (completions, start))
@@ -68,12 +68,12 @@ class TestJython(unittest.TestCase):
             self.assert_(completions.find('END@@') != -1)
 
 
-            msg = urllib.quote_plus('__builtin__.str')
+            msg = urllib.parse.quote_plus('__builtin__.str')
             toWrite = '@@IMPORTS:%sEND@@' % msg
             dbg('writing' + str(toWrite))
             socket.send(toWrite)  #math completions
             completions = self.read_msg()
-            dbg(urllib.unquote_plus(completions))
+            dbg(urllib.parse.unquote_plus(completions))
 
             start = '@@COMPLETIONS('
             self.assert_(completions.startswith(start), '%s DOESNT START WITH %s' % (completions, start))
@@ -104,7 +104,7 @@ class TestJython(unittest.TestCase):
         Creates the connections needed for testing.
         '''
         p1 = self.get_free_port()
-        from thread import start_new_thread
+        from _thread import start_new_thread
         t = pycompletionserver.CompletionServer(p1)
         t.exit_process_on_kill = False
 

@@ -3,7 +3,7 @@ This module should be run to recreate the files that we generate automatically
 (i.e.: modules that shouldn't be traced and cython .pyx)
 '''
 
-from __future__ import print_function
+
 
 import os
 import struct

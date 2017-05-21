@@ -3,7 +3,7 @@ from _pydevd_bundle import pydevd_xml
 from os.path import basename
 import traceback
 try:
-    from urllib import quote, quote_plus, unquote, unquote_plus
+    from urllib.parse import quote, quote_plus, unquote, unquote_plus
 except:
     from urllib.parse import quote, quote_plus, unquote, unquote_plus  #@Reimport @UnresolvedImport
 
@@ -148,7 +148,7 @@ def get_referrer_info(searched_obj):
                 if r_type == frame_type:
                     if DEBUG:
                         sys.stderr.write('Found frame referrer: %r\n' % (r,))
-                    for key, val in r.f_locals.items():
+                    for key, val in list(r.f_locals.items()):
                         if val is searched_obj:
                             found_as = key
                             break
@@ -158,7 +158,7 @@ def get_referrer_info(searched_obj):
                         sys.stderr.write('Found dict referrer: %r\n' % (r,))
 
                     # Try to check if it's a value in the dict (and under which key it was found)
-                    for key, val in r.items():
+                    for key, val in list(r.items()):
                         if val is searched_obj:
                             found_as = key
                             if DEBUG:

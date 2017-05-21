@@ -47,7 +47,7 @@ class LineBreakpoint(object):
     def __init__(self, line, condition, func_name, expression, suspend_policy="NONE"):
         self.line = line
         self.condition = condition
-        self.func_name = func_name
+        self.__name__ = func_name
         self.expression = expression
         self.suspend_policy = suspend_policy
 

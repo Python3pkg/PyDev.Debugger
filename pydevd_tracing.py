@@ -2,10 +2,10 @@ from _pydevd_bundle.pydevd_constants import get_frame
 from _pydev_imps._pydev_saved_modules import thread
 
 try:
-    import cStringIO as StringIO #may not always be available @UnusedImport
+    import io as StringIO #may not always be available @UnusedImport
 except:
     try:
-        import StringIO #@Reimport
+        import io #@Reimport
     except:
         import io as StringIO
 
@@ -27,7 +27,7 @@ class TracingFunctionHolder:
  
 def get_exception_traceback_str():
     exc_info = sys.exc_info()
-    s = StringIO.StringIO()
+    s = io.StringIO()
     traceback.print_exception(exc_info[0], exc_info[1], exc_info[2], file=s)
     return s.getvalue()
 
@@ -38,7 +38,7 @@ def _get_stack_str(frame):
           '\nto see how to restore the debug tracing back correctly.\n' 
           
     if TracingFunctionHolder._traceback_limit:
-        s = StringIO.StringIO()
+        s = io.StringIO()
         s.write('Call Location:\n')
         traceback.print_stack(f=frame, limit=TracingFunctionHolder._traceback_limit, file=s)
         msg = msg + s.getvalue()

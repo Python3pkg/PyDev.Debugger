@@ -137,12 +137,12 @@ class Regenerator(object):
         'x.__iter__() <==> iter(x)'
         return self
 
-    def next(self):
+    def __next__(self):
         'x.next() -> the next value, or raise StopIteration'
         if self.__g_object is None:
             self.__g_object = self.__g_function( *self.__v_args, **self.__d_args )
         try:
-            return self.__g_object.next()
+            return next(self.__g_object)
         except StopIteration:
             self.__g_object = None
             raise

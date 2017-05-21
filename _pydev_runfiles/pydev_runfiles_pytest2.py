@@ -84,13 +84,13 @@ def _MockFileRepresentation():
 
             if PY2:
                 # Note: it usually is NOT unicode...
-                if not isinstance(path, unicode):
+                if not isinstance(path, str):
                     path = path.decode(sys.getfilesystemencoding(), 'replace')
 
                 # Note: it usually is unicode...
-                if not isinstance(msg, unicode):
+                if not isinstance(msg, str):
                     msg = msg.decode('utf-8', 'replace')
-                unicode_line = unicode('File "%s", line %s\n%s') % (
+                unicode_line = str('File "%s", line %s\n%s') % (
                     path, self.lineno, msg)
                 tw.line(unicode_line)
             else:
@@ -218,17 +218,17 @@ def append_strings(s1, s2):
         return s1 + s2
     
     if sys.version_info[0] == 2:
-        if not isinstance(s1, basestring):
+        if not isinstance(s1, str):
             s1 = str(s1)
             
-        if not isinstance(s2, basestring):
+        if not isinstance(s2, str):
             s2 = str(s2)
             
         # Prefer bytes
-        if isinstance(s1, unicode):
+        if isinstance(s1, str):
             s1 = s1.encode('utf-8')
             
-        if isinstance(s2, unicode):
+        if isinstance(s2, str):
             s2 = s2.encode('utf-8')
             
         return s1 + s2

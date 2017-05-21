@@ -1,7 +1,7 @@
 import unittest
 from _pydev_imps._pydev_saved_modules import thread
 try:
-    import Queue
+    import queue
 except:
     import queue as Queue #@UnresolvedImport
 from _pydevd_bundle.pydevd_constants import * #@UnusedWildImport
@@ -68,7 +68,7 @@ def execute_tests_in_parallel(tests, jobs, split, verbosity, coverage_files, cov
                 key = (test.__pydev_pyfile__, test.__pydev_module_name__)
                 module_to_tests.setdefault(key, []).append(test)
 
-        for key, tests in module_to_tests.items():
+        for key, tests in list(module_to_tests.items()):
             queue_elements.append(tests)
 
         if len(queue_elements) < jobs:
@@ -108,14 +108,14 @@ def execute_tests_in_parallel(tests, jobs, split, verbosity, coverage_files, cov
     sys.stdout.write('Running tests in parallel with: %s jobs.\n' %(jobs,))
 
 
-    queue = Queue.Queue()
+    queue = queue.Queue()
     for item in tests_queue:
         queue.put(item, block=False)
 
 
     providers = []
     clients = []
-    for i in xrange(jobs):
+    for i in range(jobs):
         test_cases_provider = CommunicationThread(queue)
         providers.append(test_cases_provider)
 
@@ -165,11 +165,11 @@ class CommunicationThread(threading.Thread):
         # See: http://bugs.python.org/issue6085
         # See: http://www.answermysearches.com/xmlrpc-server-slow-in-python-how-to-fix/2140/
         try:
-            import BaseHTTPServer
+            import http.server
             def _bare_address_string(self):
                 host, port = self.client_address[:2]
                 return '%s' % host
-            BaseHTTPServer.BaseHTTPRequestHandler.address_string = _bare_address_string
+            http.server.BaseHTTPRequestHandler.address_string = _bare_address_string
 
         except:
             pass

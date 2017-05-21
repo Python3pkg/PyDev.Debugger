@@ -1,5 +1,5 @@
 if __name__ == '__main__':
-    print('Run as main: %s' % (__file__,))
+    print(('Run as main: %s' % (__file__,)))
     import sys
     sys.stdout.flush()
     import pydevd

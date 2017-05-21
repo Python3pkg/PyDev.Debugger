@@ -42,7 +42,7 @@ Interactive debugging console.
     CmdError
 """
 
-from __future__ import with_statement
+
 
 __revision__ = "$Id$"
 
@@ -534,9 +534,9 @@ class ConsoleDebugger (Cmd, EventHandler):
         start = event.get_start_address()
         if start:
             start = HexOutput.address(start)
-            print("Started process %d at %s" % (pid, start))
+            print(("Started process %d at %s" % (pid, start)))
         else:
-            print("Attached to process %d" % pid)
+            print(("Attached to process %d" % pid))
 
     # Tell the user a thread was started.
     def print_thread_start(self, event):
@@ -546,27 +546,27 @@ class ConsoleDebugger (Cmd, EventHandler):
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 start = event.get_process().get_label_at_address(start)
-            print("Started thread %d at %s" % (tid, start))
+            print(("Started thread %d at %s" % (tid, start)))
         else:
-            print("Attached to thread %d" % tid)
+            print(("Attached to thread %d" % tid))
 
     # Tell the user a process has finished.
     def print_process_end(self, event):
         pid  = event.get_pid()
         code = event.get_exit_code()
-        print("Process %d terminated, exit code %d" % (pid, code))
+        print(("Process %d terminated, exit code %d" % (pid, code)))
 
     # Tell the user a thread has finished.
     def print_thread_end(self, event):
         tid  = event.get_tid()
         code = event.get_exit_code()
-        print("Thread %d terminated, exit code %d" % (tid, code))
+        print(("Thread %d terminated, exit code %d" % (tid, code)))
 
     # Print(debug strings.
     def print_debug_string(self, event):
         tid    = event.get_tid()
         string = event.get_debug_string()
-        print("Thread %d says: %r" % (tid, string))
+        print(("Thread %d says: %r" % (tid, string)))
 
     # Inform the user of any other debugging event.
     def print_event(self, event):
@@ -575,10 +575,10 @@ class ConsoleDebugger (Cmd, EventHandler):
         desc = event.get_event_description()
         if code in desc:
             print('')
-            print("%s: %s" % (name, desc))
+            print(("%s: %s" % (name, desc)))
         else:
             print('')
-            print("%s (%s): %s" % (name, code, desc))
+            print(("%s (%s): %s" % (name, code, desc)))
         self.print_event_location(event)
 
     # Stop on exceptions and prompt for commands.
@@ -636,19 +636,19 @@ class ConsoleDebugger (Cmd, EventHandler):
         except NotImplementedError:
             disasm = None
         print('')
-        print(CrashDump.dump_registers(ctx),)
-        print("%s:" % label)
+        print((CrashDump.dump_registers(ctx),))
+        print(("%s:" % label))
         if disasm:
-            print(CrashDump.dump_code_line(disasm[0], pc, bShowDump = True))
+            print((CrashDump.dump_code_line(disasm[0], pc, bShowDump = True)))
         else:
             try:
                 data = process.peek(pc, 15)
             except Exception:
                 data = None
             if data:
-                print('%s: %s' % (HexDump.address(pc), HexDump.hexblock_byte(data)))
+                print(('%s: %s' % (HexDump.address(pc), HexDump.hexblock_byte(data))))
             else:
-                print('%s: ???' % HexDump.address(pc))
+                print(('%s: ???' % HexDump.address(pc)))
 
     # Display memory contents using a given method.
     def print_memory_display(self, arg, method):
@@ -659,8 +659,8 @@ class ConsoleDebugger (Cmd, EventHandler):
         label                   = self.get_process(pid).get_label_at_address(address)
         data                    = self.read_memory(address, size, pid)
         if data:
-            print("%s:" % label)
-            print(method(data, address),)
+            print(("%s:" % label))
+            print((method(data, address),))
 
 #------------------------------------------------------------------------------
 # Debugging
@@ -866,7 +866,7 @@ class ConsoleDebugger (Cmd, EventHandler):
                 d = data[ p : min(q, p + width) ]
                 h = HexDump.hexline(d, width = width)
                 a = HexDump.address(address + p)
-                print("%s: %s" % (a, h))
+                print(("%s: %s" % (a, h)))
                 p = data.find(query, q)
 
     # Kill a process.
@@ -876,9 +876,9 @@ class ConsoleDebugger (Cmd, EventHandler):
             process.kill()
             if self.debug.is_debugee(pid):
                 self.debug.detach(pid)
-            print("Killed process (%d)" % pid)
+            print(("Killed process (%d)" % pid))
         except Exception:
-            print("Error trying to kill process (%d)" % pid)
+            print(("Error trying to kill process (%d)" % pid))
 
     # Kill a thread.
     def kill_thread(self, tid):
@@ -889,9 +889,9 @@ class ConsoleDebugger (Cmd, EventHandler):
             pid = process.get_pid()
             if self.debug.is_debugee(pid) and not process.is_alive():
                 self.debug.detach(pid)
-            print("Killed thread (%d)" % tid)
+            print(("Killed thread (%d)" % tid))
         except Exception:
-            print("Error trying to kill thread (%d)" % tid)
+            print(("Error trying to kill thread (%d)" % tid))
 
 #------------------------------------------------------------------------------
 # Command prompt input
@@ -904,7 +904,7 @@ class ConsoleDebugger (Cmd, EventHandler):
                 break
             except CmdError:
                 e = sys.exc_info()[1]
-                print("*** Error: %s" % str(e))
+                print(("*** Error: %s" % str(e)))
             except Exception:
                 traceback.print_exc()
 ##                self.debuggerExit = True
@@ -912,7 +912,7 @@ class ConsoleDebugger (Cmd, EventHandler):
     # Prompt the user for a YES/NO kind of question.
     def ask_user(self, msg, prompt = "Are you sure? (y/N): "):
         print(msg)
-        answer = raw_input(prompt)
+        answer = input(prompt)
         answer = answer.strip()[:1].lower()
         return answer == 'y'
 
@@ -1069,7 +1069,7 @@ class ConsoleDebugger (Cmd, EventHandler):
                             commands.add( 'do_%s' % n )
                 commands = list(commands)
                 commands.sort()
-            print(self.get_help(commands))
+            print((self.get_help(commands)))
 
     def do_shell(self, arg):
         """
@@ -1240,9 +1240,9 @@ class ConsoleDebugger (Cmd, EventHandler):
             for pid in targets:
                 try:
                     debug.attach(pid)
-                    print("Attached to process (%d)" % pid)
+                    print(("Attached to process (%d)" % pid))
                 except Exception:
-                    print("Error: can't attach to process (%d)" % pid)
+                    print(("Error: can't attach to process (%d)" % pid))
 
     def do_detach(self, arg):
         """
@@ -1262,9 +1262,9 @@ class ConsoleDebugger (Cmd, EventHandler):
         for pid in targets:
             try:
                 debug.detach(pid)
-                print("Detached from process (%d)" % pid)
+                print(("Detached from process (%d)" % pid))
             except Exception:
-                print("Error: can't detach from process (%d)" % pid)
+                print(("Error: can't detach from process (%d)" % pid))
 
     def do_windowed(self, arg):
         """
@@ -1277,7 +1277,7 @@ class ConsoleDebugger (Cmd, EventHandler):
             process = self.debug.execl(arg,
                                                 bConsole = False,
                                                  bFollow = self.options.follow)
-            print("Spawned process (%d)" % process.get_pid())
+            print(("Spawned process (%d)" % process.get_pid()))
         except Exception:
             raise CmdError("can't execute")
         self.set_fake_last_event(process)
@@ -1293,7 +1293,7 @@ class ConsoleDebugger (Cmd, EventHandler):
             process = self.debug.execl(arg,
                                                 bConsole = True,
                                                  bFollow = self.options.follow)
-            print("Spawned process (%d)" % process.get_pid())
+            print(("Spawned process (%d)" % process.get_pid()))
         except Exception:
             raise CmdError("can't execute")
         self.set_fake_last_event(process)
@@ -1372,7 +1372,7 @@ class ConsoleDebugger (Cmd, EventHandler):
                 else:
                     filename = system.get_process(pid).get_filename()
                     filename = PathOperations.pathname_to_filename(filename)
-                print("%-12d %s" % (pid, filename))
+                print(("%-12d %s" % (pid, filename)))
 
     do_pl = do_processlist
 
@@ -1388,7 +1388,7 @@ class ConsoleDebugger (Cmd, EventHandler):
             for thread in process.iter_threads():
                 tid  = thread.get_tid()
                 name = thread.get_name()
-                print("%-12d %s" % (tid, name))
+                print(("%-12d %s" % (tid, name)))
         else:
             system   = self.debug.system
             pid_list = self.debug.get_debugee_pids()
@@ -1399,7 +1399,7 @@ class ConsoleDebugger (Cmd, EventHandler):
                     for thread in process.iter_threads():
                         tid  = thread.get_tid()
                         name = thread.get_name()
-                        print("%-12d %s" % (tid, name))
+                        print(("%-12d %s" % (tid, name)))
 
     do_tl = do_threadlist
 
@@ -1480,7 +1480,7 @@ class ConsoleDebugger (Cmd, EventHandler):
         try:
             process.inject_dll(filename, bWait=False)
         except RuntimeError:
-            print("Can't inject module: %r" % filename)
+            print(("Can't inject module: %r" % filename))
 
     # TODO: modunload
 
@@ -1497,11 +1497,11 @@ class ConsoleDebugger (Cmd, EventHandler):
         try:
             stack_trace = thread.get_stack_trace_with_labels()
             if stack_trace:
-                print(CrashDump.dump_stack_trace_with_labels(stack_trace),)
+                print((CrashDump.dump_stack_trace_with_labels(stack_trace),))
             else:
-                print("No stack trace available for thread (%d)" % tid)
+                print(("No stack trace available for thread (%d)" % tid))
         except WindowsError:
-            print("Can't get stack trace for thread (%d)" % tid)
+            print(("Can't get stack trace for thread (%d)" % tid))
 
     do_k = do_stack
 
@@ -1592,9 +1592,9 @@ class ConsoleDebugger (Cmd, EventHandler):
             deferred = True
         self.debug.break_at(pid, address)
         if deferred:
-            print("Deferred breakpoint set at %s" % address)
+            print(("Deferred breakpoint set at %s" % address))
         else:
-            print("Breakpoint set at %s" % address)
+            print(("Breakpoint set at %s" % address))
 
     def do_ba(self, arg):
         """
@@ -1676,15 +1676,15 @@ class ConsoleDebugger (Cmd, EventHandler):
             printed_process_banner = False
             if bplist:
                 if not printed_process_banner:
-                    print("Process %d:" % pid)
+                    print(("Process %d:" % pid))
                     printed_process_banner = True
                 for bp in bplist:
                     address = repr(bp)[1:-1].replace('remote address ','')
-                    print("  %s" % address)
+                    print(("  %s" % address))
             dbplist = debug.get_process_deferred_code_breakpoints(pid)
             if dbplist:
                 if not printed_process_banner:
-                    print("Process %d:" % pid)
+                    print(("Process %d:" % pid))
                     printed_process_banner = True
                 for (label, action, oneshot) in dbplist:
                     if oneshot:
@@ -1694,22 +1694,22 @@ class ConsoleDebugger (Cmd, EventHandler):
                         address = "  Deferred unconditional" \
                               " code breakpoint at %s"
                     address = address % label
-                    print("  %s" % address)
+                    print(("  %s" % address))
             bplist = debug.get_process_page_breakpoints(pid)
             if bplist:
                 if not printed_process_banner:
-                    print("Process %d:" % pid)
+                    print(("Process %d:" % pid))
                     printed_process_banner = True
                 for bp in bplist:
                     address = repr(bp)[1:-1].replace('remote address ','')
-                    print("  %s" % address)
+                    print(("  %s" % address))
             for tid in debug.system.get_process(pid).iter_thread_ids():
                 bplist = debug.get_thread_hardware_breakpoints(tid)
                 if bplist:
-                    print("Thread %d:" % tid)
+                    print(("Thread %d:" % tid))
                     for bp in bplist:
                         address = repr(bp)[1:-1].replace('remote address ','')
-                        print("  %s" % address)
+                        print(("  %s" % address))
 
     def do_bo(self, arg):
         """
@@ -1844,10 +1844,10 @@ class ConsoleDebugger (Cmd, EventHandler):
             next_address = last_code[0] + last_code[1]
             next_address = HexOutput.integer(next_address)
             self.default_disasm_target = next_address
-            print("%s:" % label)
+            print(("%s:" % label))
 ##            print(CrashDump.dump_code(code))
             for line in code:
-                print(CrashDump.dump_code_line(line, bShowDump = False))
+                print((CrashDump.dump_code_line(line, bShowDump = False)))
 
     do_u = do_disassemble
 
@@ -1875,7 +1875,7 @@ class ConsoleDebugger (Cmd, EventHandler):
             addr_width = 16
         # TODO: need a prettier output here!
         for addr in iter:
-            print(HexDump.address(addr, addr_width))
+            print((HexDump.address(addr, addr_width)))
 
     do_s = do_search
 
@@ -1902,7 +1902,7 @@ class ConsoleDebugger (Cmd, EventHandler):
         else:
             addr_width = 16
         for addr, bytes in iter:
-            print(HexDump.hexblock(bytes, addr, addr_width),)
+            print((HexDump.hexblock(bytes, addr, addr_width),))
 
     do_sh = do_searchhex
 
@@ -1991,7 +1991,7 @@ class ConsoleDebugger (Cmd, EventHandler):
         process                 = self.get_process(pid)
         data                    = process.peek_string(address, False, size)
         if data:
-            print(repr(data))
+            print((repr(data)))
         self.last_display_command = self.do_ds
 
     def do_du(self, arg):
@@ -2006,7 +2006,7 @@ class ConsoleDebugger (Cmd, EventHandler):
         process                 = self.get_process(pid)
         data                    = process.peek_string(address, True, size)
         if data:
-            print(repr(data))
+            print((repr(data)))
         self.last_display_command = self.do_du
 
     def do_register(self, arg):
@@ -2045,9 +2045,9 @@ class ConsoleDebugger (Cmd, EventHandler):
                 reg = arg.upper()
                 val = HexDump.address(value)
                 if label:
-                    print("%s: %s (%s)" % (reg, val, label))
+                    print(("%s: %s (%s)" % (reg, val, label)))
                 else:
-                    print("%s: %s" % (reg, val))
+                    print(("%s: %s" % (reg, val)))
 
     do_r = do_register
 
@@ -2090,7 +2090,7 @@ class ConsoleDebugger (Cmd, EventHandler):
             memoryMap       = process.get_memory_map()
             mappedFilenames = process.get_mapped_filenames()
             print('')
-            print(CrashDump.dump_memory_map(memoryMap, mappedFilenames))
+            print((CrashDump.dump_memory_map(memoryMap, mappedFilenames)))
         except WindowsError:
             msg = "can't get memory information for process (%d)"
             raise CmdError(msg % process.get_pid())

@@ -159,8 +159,8 @@ class Test(unittest.TestCase):
                 return 2
 
         if hasattr(F.m1, 'func_code'):
-            self.assertTrue(pydevd_reload.code_objects_equal(F.m1.func_code, G.m1.func_code))
-            self.assertFalse(pydevd_reload.code_objects_equal(F.m1.func_code, H.m1.func_code))
+            self.assertTrue(pydevd_reload.code_objects_equal(F.m1.__code__, G.m1.__code__))
+            self.assertFalse(pydevd_reload.code_objects_equal(F.m1.__code__, H.m1.__code__))
         else:
             self.assertTrue(pydevd_reload.code_objects_equal(F.m1.__code__, G.m1.__code__))
             self.assertFalse(pydevd_reload.code_objects_equal(F.m1.__code__, H.m1.__code__))
@@ -173,16 +173,12 @@ class Test(unittest.TestCase):
             def __init__(cls, name, bases, attrs):
                 super(Meta, cls).__init__(name, bases, attrs)
 
-        class F:
-            __metaclass__ = Meta
-
+        class F(metaclass=Meta):
             def m1(self):
                 return 1
 
 
-        class G:
-            __metaclass__ = Meta
-
+        class G(metaclass=Meta):
             def m1(self):
                 return 2
 

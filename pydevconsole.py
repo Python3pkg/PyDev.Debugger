@@ -3,6 +3,7 @@ Entry point module to start the interactive console.
 '''
 from _pydev_imps._pydev_saved_modules import thread
 from _pydevd_bundle.pydevd_constants import IS_JYTHON, dict_iter_items
+import collections
 start_new_thread = thread.start_new_thread
 
 try:
@@ -15,6 +16,7 @@ from code import InteractiveInterpreter
 
 import os
 import sys
+import atexit
 
 from _pydev_imps._pydev_saved_modules import threading
 
@@ -27,7 +29,7 @@ from _pydevd_bundle import pydevd_vars, pydevd_save_locals
 from _pydev_bundle.pydev_imports import Exec, _queue
 
 try:
-    import __builtin__
+    import builtins
 except:
     import builtins as __builtin__  # @UnresolvedImport
 
@@ -81,7 +83,7 @@ try:
     except NameError:
         from _pydev_bundle.pydev_imports import execfile
 
-        __builtin__.execfile = execfile
+        builtins.execfile = execfile
 except:
     pass
 
@@ -91,8 +93,8 @@ try:
     import builtins  # @UnresolvedImport
     builtins.runfile = runfile
 except:
-    import __builtin__
-    __builtin__.runfile = runfile
+    import builtins
+    builtins.runfile = runfile
 
 
 #=======================================================================================================================
@@ -200,7 +202,7 @@ def process_exec_queue(interpreter):
             except _queue.Empty:
                 continue
 
-            if callable(code_fragment):
+            if isinstance(code_fragment, collections.Callable):
                 # It can be a callable (i.e.: something that must run in the main
                 # thread can be put in the queue for later execution).
                 code_fragment()
@@ -231,7 +233,7 @@ try:
     if IPYTHON:
         from _pydev_bundle.pydev_ipython_console import InterpreterInterface
         if exitfunc is not None:
-            sys.exitfunc = exitfunc
+            atexit.register(exitfunc)
         else:
             try:
                 delattr(sys, 'exitfunc')
@@ -311,7 +313,7 @@ def start_console_server(host, port, interpreter):
         (h, port) = server.socket.getsockname()
 
         print(port)
-        print(interpreter.client_port)
+        print((interpreter.client_port))
 
 
     sys.stderr.write(interpreter.get_greeting_msg())
@@ -375,7 +377,7 @@ def get_interpreter():
         interpreterInterface = getattr(__builtin__, 'interpreter')
     except AttributeError:
         interpreterInterface = InterpreterInterface(None, None, threading.currentThread())
-        __builtin__.interpreter = interpreterInterface
+        builtins.interpreter = interpreterInterface
         sys.stderr.write(interpreterInterface.get_greeting_msg())
         sys.stderr.flush()
 

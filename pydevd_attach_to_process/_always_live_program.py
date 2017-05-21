@@ -1,6 +1,6 @@
 import sys
 import struct
-print('Executable: %s' % sys.executable)
+print(('Executable: %s' % sys.executable))
 import os
 def loop_in_thread():
     while True:
@@ -16,10 +16,10 @@ threading.Thread(target=loop_in_thread).start()
 def is_python_64bit():
     return (struct.calcsize('P') == 8)
 
-print('Is 64: %s' % is_python_64bit())
+print(('Is 64: %s' % is_python_64bit()))
 
 if __name__ == '__main__':
-    print('pid:%s' % (os.getpid()))
+    print(('pid:%s' % (os.getpid())))
     i = 0
     while True:
         i += 1

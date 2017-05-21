@@ -48,7 +48,7 @@ MAPPING["urllib2"].append(MAPPING["urllib"][1])
 
 def build_pattern():
     bare = set()
-    for old_module, changes in MAPPING.items():
+    for old_module, changes in list(MAPPING.items()):
         for change in changes:
             new_module, members = change
             members = alternates(members)
@@ -128,7 +128,7 @@ class FixUrllib(FixImports):
                 else:
                     member_name = member.value
                     as_name = None
-                if member_name != u",":
+                if member_name != ",":
                     for change in MAPPING[mod_member.value]:
                         if member_name in change[1]:
                             if change[0] not in mod_dict:
